@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Domains\User\Models\User;
+
+class OAuthAccount extends Model
+{
+    protected $table = 'oauth_accounts';
+    protected $guarded = [];
+
+    protected $casts = [
+        'data' => 'array',
+    ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+}
