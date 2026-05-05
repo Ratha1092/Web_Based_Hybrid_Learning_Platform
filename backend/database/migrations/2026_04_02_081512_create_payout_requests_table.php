@@ -13,9 +13,9 @@ return new class extends Migration
             $table->foreignId('instructor_id')->constrained('users')->cascadeOnDelete();
             $table->decimal('amount', 12, 2);
             $table->string('currency')->default('USD');
-            $table->string('payment_method'); // bank, khqr
+            $table->string('payment_method');
             $table->json('details')->nullable();
-            $table->string('status')->default('pending');// pending | approved | rejected | paid
+            $table->string('status')->default('pending');
             $table->timestamp('processed_at')->nullable();
             $table->foreignId('processed_by')->nullable()->constrained('users')->nullOnDelete();
             $table->text('rejection_reason')->nullable();

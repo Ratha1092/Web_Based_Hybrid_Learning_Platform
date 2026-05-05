@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Domains\Users\Controllers\ProfileController;
 
-// Placeholder for User routes - add controllers as needed
 Route::middleware('auth:sanctum')->prefix('users')->group(function () {
-    // Route::get('/{id}', [UserController::class, 'show']);
-    // Route::put('/{id}', [UserController::class, 'update']);
-});
+        Route::get('/me', [ProfileController::class, 'me']);
+        Route::put('/profile', [ProfileController::class, 'update']);
+    });

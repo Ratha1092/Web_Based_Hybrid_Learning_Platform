@@ -10,10 +10,7 @@ return new class extends Migration
     {
         Schema::create('instructor_wallets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('instructor_id')
-                ->unique()
-                ->constrained('users')
-                ->cascadeOnDelete();
+            $table->foreignId('instructor_id')->unique()->constrained('users')->cascadeOnDelete();
             $table->decimal('balance', 12, 2)->default(0);
             $table->decimal('pending_balance', 12, 2)->default(0);
             $table->string('currency')->default('USD');

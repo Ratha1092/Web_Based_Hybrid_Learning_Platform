@@ -1,40 +1,40 @@
 <?php
 
-namespace App\Domain\Users\Controllers;
+namespace App\Domains\Users\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Domains\Users\Services\UserService;
+use App\Domains\Users\Requests\UpdateProfileRequest;
+use App\Domains\Users\Resources\UserResource;
 use App\Support\ApiResponse;
+use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
-    public function show()
-    {
-        $user = auth()->user()->load('profile');
+    public function __construct(
+        protected UserService $userService
+    ) {}
 
-        return ApiResponse::success([
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'role' => $user->role,
-            ],
-            'profile' => $user->profile
-        ]);
+    public function me(Request $request)
+    {
+        $user = $this->userService->getProfile($request->user());
+
+        return ApiResponse::success(
+            new UserResource($user),
+            'Profile retrieved successfully'
+        );
     }
 
-    public function update(Request $request)
+    public function update(UpdateProfileRequest $request)
     {
-        $data = $request->validate([
-            'bio' => 'nullable|string',
-            'phone' => 'nullable|string',
-            'country' => 'nullable|string',
-        ]);
+        $user = $this->userService->updateProfile(
+            $request->user(),
+            $request->validated()
+        );
 
-        $profile = auth()->user()->profile;
-
-        $profile->update($data);
-
-        return ApiResponse::success($profile, 'Profile updated');
+        return ApiResponse::success(
+            new UserResource($user),
+            'Profile updated successfully'
+        );
     }
 }
