@@ -3,8 +3,8 @@
 namespace App\Domains\Learning\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Domains\User\Models\User;
-use App\Domains\Course\Models\Lesson;
+use App\Domains\Users\Models\User;
+use App\Domains\Courses\Models\Lesson;
 
 class LessonProgress extends Model
 {

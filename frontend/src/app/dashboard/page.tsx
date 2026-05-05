@@ -40,7 +40,15 @@ export default function DashboardPage() {
         {/* Navigation */}
         <nav className="bg-white shadow">
           <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-indigo-600">Dashboard</h1>
+            <div className="flex items-center gap-4">
+              <Link href="/home" className="text-2xl font-bold text-indigo-600 hover:text-indigo-700">
+                Dashboard
+              </Link>
+              <span className="text-gray-400">|</span>
+              <Link href="/home" className="text-gray-600 hover:text-indigo-600 font-medium">
+                ← Back to Home
+              </Link>
+            </div>
             <div className="flex items-center gap-4">
               <span className="text-gray-700">Welcome, <strong>{user?.name}</strong>!</span>
               <button

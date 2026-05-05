@@ -57,7 +57,7 @@ CREATE TABLE instructor_verifications (
 ### 3. Models
 
 #### InstructorVerification Model
-**File**: `app/Domains/User/Models/InstructorVerification.php`
+**File**: `app/Domains/Users/Models/InstructorVerification.php`
 
 ```php
 // Relationships
@@ -76,7 +76,7 @@ InstructorVerification::rejected()
 ```
 
 #### User Model Enhancements
-**File**: `app/Domains/User/Models/User.php`
+**File**: `app/Domains/Users/Models/User.php`
 
 ```php
 // New Relationship

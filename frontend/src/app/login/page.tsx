@@ -50,8 +50,8 @@ export default function LoginPage() {
 
         setToken(res.data.token);
 
-        // ✅ Redirect to dashboard
-        router.push("/dashboard");
+        // ✅ Redirect to home
+        router.push("/home");
       } else {
         setGeneralError("Login successful but no token received");
       }

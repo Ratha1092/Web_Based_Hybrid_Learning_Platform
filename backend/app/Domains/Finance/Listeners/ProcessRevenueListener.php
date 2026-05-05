@@ -2,7 +2,7 @@
 
 namespace App\Domains\Finance\Listeners;
 
-use App\Domains\Payment\Events\PaymentSuccessEvent;
+use App\Domains\Payments\Events\PaymentSuccessEvent;
 use App\Domains\Finance\Models\RevenueShare;
 use App\Domains\Analytics\Services\AnalyticsService;
 use Illuminate\Contracts\Queue\ShouldQueue;

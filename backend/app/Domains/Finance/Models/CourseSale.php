@@ -3,7 +3,7 @@
 namespace App\Domains\Finance\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Domains\Course\Models\Course;
+use App\Domains\Courses\Models\Course;
 
 class CourseSale extends Model
 {

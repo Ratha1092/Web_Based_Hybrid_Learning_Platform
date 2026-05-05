@@ -78,7 +78,7 @@ A **production-ready instructor verification system** that ensures only qualifie
 ### Created (8 files)
 ```
 1. database/migrations/2026_04_23_create_instructor_verifications_table.php
-2. app/Domains/User/Models/InstructorVerification.php
+2. app/Domains/Users/Models/InstructorVerification.php
 3. app/Http/Middleware/VerifiedInstructor.php
 4. app/Filament/Resources/InstructorVerificationResource.php
 5. app/Filament/Resources/InstructorVerificationResource/Pages/ListInstructorVerifications.php
@@ -89,7 +89,7 @@ A **production-ready instructor verification system** that ensures only qualifie
 
 ### Modified (4 files)
 ```
-1. app/Domains/User/Models/User.php
+1. app/Domains/Users/Models/User.php
    - Added: instructorVerification() relationship
    - Added: Helper methods (isVerifiedInstructor, etc.)
    - Added: instructor_status to fillable

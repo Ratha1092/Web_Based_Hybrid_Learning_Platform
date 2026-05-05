@@ -3,7 +3,7 @@
 namespace App\Domains\Finance\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Domains\User\Models\User;
+use App\Domains\Users\Models\User;
 
 class PayoutRequest extends Model
 {

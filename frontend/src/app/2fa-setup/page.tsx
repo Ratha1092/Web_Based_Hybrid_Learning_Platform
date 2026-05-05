@@ -5,6 +5,7 @@ import { useAuth } from "@/src/context/AuthContext";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ProtectedRoute } from "@/src/components/ProtectedRoute";
+import { apiFetch } from "@/src/lib/api";
 
 export default function TwoFactorSetupPage() {
   const router = useRouter();
@@ -22,25 +23,16 @@ export default function TwoFactorSetupPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:8000/api/v1/auth/2fa/enable", {
+      const data = await apiFetch("/auth/2fa/enable", {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
       });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || "Failed to request 2FA code");
-      }
 
       // For testing, show the code (remove in production)
       setDisplayCode(data.data.code);
       setStep("verify");
     } catch (err: any) {
       setError(err.message || "Failed to request code");
+      console.error("2FA enable error:", err);
     } finally {
       setLoading(false);
     }
@@ -57,25 +49,16 @@ export default function TwoFactorSetupPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:8000/api/v1/auth/2fa/verify-enable", {
+      await apiFetch("/auth/2fa/verify-enable", {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify({ code }),
       });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || "Invalid code");
-      }
 
       setSuccess(true);
       setTimeout(() => router.push("/security-settings"), 2000);
     } catch (err: any) {
       setError(err.message || "Verification failed");
+      console.error("2FA verify error:", err);
     } finally {
       setLoading(false);
     }

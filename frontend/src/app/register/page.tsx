@@ -51,8 +51,8 @@ export default function RegisterPage() {
         }
         setToken(res.data.token);
 
-        // Redirect to dashboard
-        router.push("/dashboard");
+        // Redirect to home
+        router.push("/home");
       }
 
     } 

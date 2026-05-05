@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { apiFetch } from "@/src/lib/api";
 
 export default function ForgotPasswordPage() {
   const router = useRouter();
@@ -23,22 +24,16 @@ export default function ForgotPasswordPage() {
     try {
       setLoading(true);
 
-      const res = await fetch("http://localhost:8000/api/v1/auth/forgot-password", {
+      await apiFetch("/auth/forgot-password", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || "Request failed");
-      }
 
       setSuccess(true);
       setEmail("");
     } catch (err: any) {
       setError(err.message || "Failed to send reset link");
+      console.error("Forgot password error:", err);
     } finally {
       setLoading(false);
     }

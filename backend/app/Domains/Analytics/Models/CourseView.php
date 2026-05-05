@@ -3,8 +3,8 @@
 namespace App\Domains\Analytics\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Domains\Course\Models\Course;
-use App\Domains\User\Models\User;
+use App\Domains\Courses\Models\Course;
+use App\Domains\Users\Models\User;
 
 class CourseView extends Model
 {

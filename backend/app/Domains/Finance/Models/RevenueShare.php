@@ -18,6 +18,6 @@ class RevenueShare extends Model
 
     public function orderItem()
     {
-        return $this->belongsTo(\App\Domains\Order\Models\OrderItem::class);
+        return $this->belongsTo(\App\Domains\Orders\Models\OrderItem::class);
     }
 }

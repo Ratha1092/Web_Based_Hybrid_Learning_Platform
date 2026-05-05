@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
-use App\Domains\Payment\Events\PaymentSuccessEvent;
+use App\Domains\Payments\Events\PaymentSuccessEvent;
 use App\Domains\Learning\Listeners\EnrollStudentListener;
 use App\Domains\Finance\Listeners\ProcessRevenueListener;
 use App\Domains\Finance\Listeners\UpdateInstructorWalletListener;

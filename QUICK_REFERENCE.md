@@ -1,53 +1,242 @@
-# Quick Reference Card - Authentication System
+# Domain-Driven Architecture Quick Reference
 
-## 🚀 Quick Start (5 minutes)
+## 🎯 Architecture Overview
 
-### Backend
+Your backend is now organized using **Domain-Driven Design**. Each business domain is completely self-contained with its own controllers, services, models, and routes.
+
+---
+
+## 📁 Domain Structure
+
+```
+app/Domains/
+├── Auth/                 ✅ Authentication & Security
+├── Courses/              ✅ Course Management
+├── Orders/               ✅ Order Processing
+├── Payments/             ✅ Payment Processing
+├── Users/                ✅ User Management
+├── Analytics/            ✅ Analytics (placeholder)
+├── Finance/              ✅ Financial Data (placeholder)
+├── Learning/             ✅ Learning Paths (placeholder)
+└── Admin/                ✅ Admin Functions (placeholder)
+```
+
+---
+
+## 🔑 Key Changes
+
+### 1. **Route Loading** (Automatic)
+```php
+// routes/api.php
+Route::prefix('v1')->group(function () {
+    foreach (glob(app_path('Domains/*/routes.php')) as $route) {
+        require $route;
+    }
+});
+```
+All domain routes automatically loaded!
+
+### 2. **API Response Format** (Consistent)
+```json
+{
+  "success": true,
+  "data": {},
+  "message": "..."
+}
+```
+
+### 3. **Controller Pattern** (Thin)
+```php
+public function store(OrderRequest $request)
+{
+    $order = $this->orderService->create($request->validated());
+    return ApiResponse::success($order);
+}
+```
+
+### 4. **Model Locations** (Domain-based)
+- Before: `app/Models/User.php`
+- After: `app/Domains/Auth/Models/User.php`
+
+---
+
+## 📍 File Locations
+
+### Auth Domain (NEW)
+```
+app/Domains/Auth/
+├── Controllers/
+│   ├── AuthController.php
+│   ├── EmailVerificationController.php
+│   ├── PasswordResetController.php
+│   ├── TwoFactorAuthController.php
+│   └── OAuthController.php
+├── Services/
+│   ├── AuthService.php
+│   ├── EmailVerificationService.php
+│   ├── PasswordResetService.php
+│   ├── TwoFactorAuthService.php
+│   └── ActivityLogService.php
+├── Models/
+│   ├── EmailVerificationToken.php
+│   ├── PasswordResetToken.php
+│   ├── TwoFactorCode.php
+│   ├── OAuthAccount.php
+│   └── ActivityLog.php
+├── Requests/
+│   ├── LoginRequest.php
+│   └── RegisterRequest.php
+├── Resources/
+│   └── UserResource.php
+└── routes.php
+```
+
+---
+
+## 🚀 API Endpoints
+
+| Endpoint | Method | Domain |
+|----------|--------|--------|
+| `/v1/auth/register` | POST | Auth |
+| `/v1/auth/login` | POST | Auth |
+| `/v1/auth/logout` | POST | Auth |
+| `/v1/auth/2fa/enable` | POST | Auth |
+| `/v1/auth/oauth/google` | POST | Auth |
+| `/v1/courses` | GET | Courses |
+| `/v1/courses/{slug}` | GET | Courses |
+| `/v1/orders` | POST | Orders |
+
+---
+
+## 💡 Usage Guidelines
+
+### Adding New Domain
 ```bash
-cd Backend
-php artisan serve
-# Running at: http://localhost:8000
+mkdir -p app/Domains/NewDomain/{Controllers,Services,Models,Requests,Resources}
 ```
 
-### Frontend
-```bash
-cd Frontend
-npm run dev
-# Running at: http://localhost:3000
+### Creating Controller
+```php
+// app/Domains/NewDomain/Controllers/NewDomainController.php
+namespace App\Domains\NewDomain\Controllers;
+use App\Support\ApiResponse;
+
+class NewDomainController
+{
+    public function store(Request $request)
+    {
+        $item = $this->service->create($request->validated());
+        return ApiResponse::success($item, 'Item created');
+    }
+}
 ```
 
-### Test
-1. Go to http://localhost:3000/register
-2. Create account with password like: `MyPass123!`
-3. Should auto-login and go to dashboard
-4. ✅ Done!
+### Creating Service
+```php
+// app/Domains/NewDomain/Services/NewDomainService.php
+namespace App\Domains\NewDomain\Services;
+
+class NewDomainService
+{
+    public function create($data)
+    {
+        return NewDomain::create($data);
+    }
+}
+```
+
+### Creating Routes
+```php
+// app/Domains/NewDomain/routes.php
+use App\Domains\NewDomain\Controllers\NewDomainController;
+
+Route::prefix('new-domain')->group(function () {
+    Route::post('/', [NewDomainController::class, 'store']);
+    Route::get('/', [NewDomainController::class, 'index']);
+});
+```
 
 ---
 
-## 📱 URLs
+## 📊 Imports Cheat Sheet
 
-| Page | URL | Status |
-|------|-----|--------|
-| Register | `http://localhost:3000/register` | Public |
-| Login | `http://localhost:3000/login` | Public |
-| Dashboard | `http://localhost:3000/dashboard` | Protected |
+### Service
+```php
+use App\Domains\Auth\Services\AuthService;
+```
+
+### Model
+```php
+use App\Domains\Auth\Models\User;
+use App\Domains\Courses\Models\Course;
+```
+
+### Controller
+```php
+use App\Domains\Auth\Controllers\AuthController;
+```
+
+### Response
+```php
+use App\Support\ApiResponse;
+return ApiResponse::success($data);
+return ApiResponse::error('Error message', 400);
+```
 
 ---
 
-## 🔑 Password Requirements
+## ✅ Refactoring Checklist
 
+- [x] Auth domain created (18 files)
+- [x] All auth models moved to domains
+- [x] All auth services moved to domains
+- [x] All auth controllers moved to domains
+- [x] Routes automatically loaded
+- [x] All controllers use ApiResponse
+- [x] User model updated with domain imports
+- [x] Requests/Resources structure created
+
+---
+
+## 📚 Documentation Files
+
+- `REFACTORING_COMPLETE.md` - Full technical details
+- `DOMAIN_DRIVEN_ARCHITECTURE.md` - Detailed architecture guide
+- `QUICK_REFERENCE.md` - This file (quick tips)
+
+---
+
+## 🔗 Legacy Support
+
+Old directories have been removed as part of the cleanup:
 ```
-MyPassword123!
-│              │
-│              └─ Symbol (!, @, #, $, etc)
-│
-├─ Uppercase (M, P)
-├─ Lowercase (yassword)
-├─ Numbers (123)
-└─ Min 8 characters
+✓ app/Services/            (removed - services now in domains)
+✓ app/Models/              (removed - models now in domains)
+✓ app/Http/Controllers/Api/ (removed - controllers now in domains)
 ```
 
 ---
+
+## 🎓 Best Practices
+
+✅ **DO:**
+- Put business logic in Services
+- Keep Controllers thin
+- Use ApiResponse for all returns
+- Organize code by domain/business function
+- Use domain-based models
+
+❌ **DON'T:**
+- Put logic in controllers
+- Use response()->json() directly
+- Mix domains (keep them isolated)
+- Create global services
+- Put models outside domains
+
+---
+
+**Status:** ✅ Domain-Driven Architecture Active
+**Updated:** May 4, 2026
 
 ## 📊 API Quick Reference
 

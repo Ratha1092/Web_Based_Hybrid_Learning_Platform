@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { apiFetch } from "@/src/lib/api";
 
 export default function VerifyEmailPage() {
   const router = useRouter();
@@ -20,16 +21,9 @@ export default function VerifyEmailPage() {
       }
 
       try {
-        const res = await fetch(`http://localhost:8000/api/v1/verify-email/${token}`, {
+        await apiFetch(`/verify-email/${token}`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
         });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-          throw new Error(data.message || "Verification failed");
-        }
 
         setStatus("success");
         setMessage("Email verified successfully!");
@@ -37,6 +31,7 @@ export default function VerifyEmailPage() {
       } catch (err: any) {
         setStatus("error");
         setMessage(err.message || "Email verification failed. Link may have expired.");
+        console.error("Email verification error:", err);
       }
     };
 

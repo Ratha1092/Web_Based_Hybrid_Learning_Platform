@@ -78,7 +78,7 @@ php artisan filament:clear-cache
 ### New Files (8 created)
 ```
 ✓ database/migrations/2026_04_23_create_instructor_verifications_table.php
-✓ app/Domains/User/Models/InstructorVerification.php
+✓ app/Domains/Users/Models/InstructorVerification.php
 ✓ app/Http/Middleware/VerifiedInstructor.php
 ✓ app/Filament/Resources/InstructorVerificationResource.php
 ✓ app/Filament/Resources/InstructorVerificationResource/Pages/ListInstructorVerifications.php
@@ -89,7 +89,7 @@ php artisan filament:clear-cache
 
 ### Modified Files (4 updated)
 ```
-✓ app/Domains/User/Models/User.php
+✓ app/Domains/Users/Models/User.php
 ✓ app/Http/Controllers/Web/AuthController.php
 ✓ resources/views/auth/register.blade.php
 ✓ resources/views/instructor/dashboard.blade.php

@@ -121,7 +121,7 @@ Update `.env` on production server with production credentials and URLs.
 app/
 ├── Http/Controllers/Web/
 │   └── SocialiteController.php (NEW - Handles OAuth)
-├── Domains/User/Models/
+├── Domains/Users/Models/
 │   └── User.php (Updated - Added OAuth fields)
 │
 config/
