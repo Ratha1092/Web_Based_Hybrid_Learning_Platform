@@ -2,19 +2,19 @@
 
 namespace App\Filament\Resources;
 
-use App\Domains\User\Models\InstructorVerification;
+use App\Domains\Users\Models\InstructorVerification;
 use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Infolist\Components\Section;
-use Filament\Infolist\Components\TextEntry;
-use Filament\Infolist\Components\ImageEntry;
+use Filament\Schemas\Components\Section;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ImageEntry;
 use Filament\Notifications\Notification;
 use App\Filament\Resources\InstructorVerificationResource\Pages;
 use Filament\Schemas\Schema;
-use Filament\Forms\Components\TextInput;
+use Filament\Actions;
 use BackedEnum;
 use UnitEnum;
 use Filament\Tables\Table;
@@ -33,8 +33,8 @@ class InstructorVerificationResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $form->schema([
-            Forms\Components\Section::make('Applicant Information')->schema([
+        return $schema->schema([
+            Section::make('Applicant Information')->schema([
                 Forms\Components\TextInput::make('user.name')
                     ->label('Instructor Name')
                     ->disabled()
@@ -45,7 +45,7 @@ class InstructorVerificationResource extends Resource
                     ->columnSpan('full'),
             ]),
 
-            Forms\Components\Section::make('Professional Details')->schema([
+            Section::make('Professional Details')->schema([
                 Forms\Components\Textarea::make('bio')
                     ->label('Professional Bio')
                     ->disabled()
@@ -69,7 +69,7 @@ class InstructorVerificationResource extends Resource
                     ->columnSpan('full'),
             ]),
 
-            Forms\Components\Section::make('Verification Status')->schema([
+            Section::make('Verification Status')->schema([
                 Forms\Components\Select::make('status')
                     ->label('Status')
                     ->options([
@@ -127,9 +127,9 @@ class InstructorVerificationResource extends Resource
                     ]),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('approve')
+                Actions\ViewAction::make(),
+                Actions\EditAction::make(),
+                Actions\Action::make('approve')
                     ->label('Approve')
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
@@ -149,7 +149,7 @@ class InstructorVerificationResource extends Resource
                             ->success()
                             ->send();
                     }),
-                Tables\Actions\Action::make('reject')
+                Actions\Action::make('reject')
                     ->label('Reject')
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
@@ -178,15 +178,15 @@ class InstructorVerificationResource extends Resource
                     }),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
 
     public static function infolist(Schema $schema): Schema
     {
-        return $infolist->schema([
+        return $schema->schema([
             Section::make('Applicant')->schema([
                 TextEntry::make('user.name'),
                 TextEntry::make('user.email'),

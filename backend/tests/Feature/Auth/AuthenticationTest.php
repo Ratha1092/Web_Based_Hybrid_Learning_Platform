@@ -4,51 +4,52 @@ namespace Tests\Feature\Auth;
 
 use App\Domains\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_login_screen_can_be_rendered(): void
+    public function test_users_can_authenticate_through_api(): void
     {
-        $response = $this->get('/login');
-
-        $response->assertStatus(200);
-    }
-
-    public function test_users_can_authenticate_using_the_login_screen(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this->post('/login', [
-            'email' => $user->email,
-            'password' => 'password',
+        $user = User::factory()->create([
+            'email' => 'login@example.com',
+            'password' => Hash::make('Password1!'),
         ]);
 
-        $this->assertAuthenticated();
-        $response->assertRedirect(route('dashboard', absolute: false));
+        $this->postJson('/api/v1/auth/login', [
+            'email' => $user->email,
+            'password' => 'Password1!',
+        ])
+            ->assertOk()
+            ->assertJsonPath('success', true)
+            ->assertJsonStructure(['data' => ['token', 'user']]);
     }
 
     public function test_users_can_not_authenticate_with_invalid_password(): void
     {
-        $user = User::factory()->create();
-
-        $this->post('/login', [
-            'email' => $user->email,
-            'password' => 'wrong-password',
+        $user = User::factory()->create([
+            'email' => 'login@example.com',
+            'password' => Hash::make('Password1!'),
         ]);
 
-        $this->assertGuest();
+        $this->postJson('/api/v1/auth/login', [
+            'email' => $user->email,
+            'password' => 'wrong-password',
+        ])
+            ->assertBadRequest()
+            ->assertJsonPath('success', false);
     }
 
-    public function test_users_can_logout(): void
+    public function test_users_can_logout_through_api(): void
     {
         $user = User::factory()->create();
+        $token = $user->createToken('api-token')->plainTextToken;
 
-        $response = $this->actingAs($user)->post('/logout');
-
-        $this->assertGuest();
-        $response->assertRedirect('/');
+        $this->withHeader('Authorization', "Bearer {$token}")
+            ->postJson('/api/v1/auth/logout')
+            ->assertOk()
+            ->assertJsonPath('success', true);
     }
 }

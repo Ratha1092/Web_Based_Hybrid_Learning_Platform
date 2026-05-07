@@ -27,12 +27,18 @@ class EmailVerificationController extends Controller
         }
 
         $token = $this->emailService->generateToken($user);
-        $verificationLink = $this->emailService->getVerificationLink($token->token);
+        $verificationLink = $this->emailService->getVerificationLink($token['token']);
 
-        return ApiResponse::success([
+        $data = [
             'message' => 'Verification email sent',
-            'verification_link' => $verificationLink, // ⚠️ remove in production
-        ], 'Verification email sent');
+        ];
+
+        if (!app()->environment('production')) {
+            $data['verification_link'] = $verificationLink;
+            $data['token'] = $token['token'];
+        }
+
+        return ApiResponse::success($data, 'Verification email sent');
     }
 
     /**
@@ -41,9 +47,9 @@ class EmailVerificationController extends Controller
     public function verify(VerifyEmailRequest $request)
     {
         try {
-            $this->emailService->verifyEmail($request->token);
+            $user = $this->emailService->verifyEmail($request->token);
 
-            ActivityLogService::log('email_verified', $request->user());
+            ActivityLogService::log('email_verified', $user);
 
             return ApiResponse::success(null, 'Email verified successfully');
         } catch (\Exception $e) {

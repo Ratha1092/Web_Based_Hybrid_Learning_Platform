@@ -34,6 +34,7 @@ class TwoFactorAuthService
     {
         $record = TwoFactorCode::where('user_id', $user->id)
             ->where('expires_at', '>', now())
+            ->where('used', false)
             ->get()
             ->first(function ($item) use ($code) {
                 return Hash::check($code, $item->code);
@@ -44,9 +45,7 @@ class TwoFactorAuthService
         }
 
         return DB::transaction(function () use ($record) {
-            if (isset($record->used)) {
-                $record->update(['used' => true]);
-            }
+            $record->update(['used' => true]);
 
             return true;
         });
@@ -55,22 +54,51 @@ class TwoFactorAuthService
     /**
      * Enable 2FA
      */
-    public function enable(User $user): void
+    public function enable(User $user): array
     {
+        $code = $this->generateCode($user);
+
+        $response = [
+            'message' => 'Verification code generated',
+        ];
+
+        if (!app()->environment('production')) {
+            $response['code'] = $code;
+        }
+
+        return $response;
+    }
+
+    public function verifyAndEnable(User $user, array $data): bool
+    {
+        if (!$this->verifyCode($user, $data['code'])) {
+            throw new \RuntimeException('Invalid or expired code');
+        }
+
         $user->update(['two_factor_enabled' => true]);
+
+        ActivityLogService::log('2fa_enabled', $user);
+
+        return true;
     }
 
     /**
      * Disable 2FA
      */
-    public function disable(User $user): void
+    public function disable(User $user, array $data = []): void
     {
+        if (isset($data['password']) && !Hash::check($data['password'], $user->password)) {
+            throw new \RuntimeException('Invalid password');
+        }
+
         $user->update([
             'two_factor_enabled' => false,
             'two_factor_secret' => null,
         ]);
 
         $user->twoFactorCodes()->delete();
+
+        ActivityLogService::log('2fa_disabled', $user);
     }
 
     /**
@@ -96,9 +124,15 @@ class TwoFactorAuthService
 
         $code = $this->generateCode($user);
 
-        return [
-            'code' => $code, // ⚠️ remove in production
+        $response = [
+            'message' => 'Verification code generated',
         ];
+
+        if (!app()->environment('production')) {
+            $response['code'] = $code;
+        }
+
+        return $response;
     }
 
     /**
@@ -117,6 +151,8 @@ class TwoFactorAuthService
         }
 
         $token = $user->createToken('api-token')->plainTextToken;
+
+        ActivityLogService::log('login', $user);
 
         return [
             'token' => $token,

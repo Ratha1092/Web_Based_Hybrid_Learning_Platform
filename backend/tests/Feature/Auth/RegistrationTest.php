@@ -9,23 +9,28 @@ class RegistrationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_registration_screen_can_be_rendered(): void
+    public function test_new_users_can_register_through_api(): void
     {
-        $response = $this->get('/register');
-
-        $response->assertStatus(200);
+        $this->postJson('/api/v1/auth/register', [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => 'Password1!',
+            'password_confirmation' => 'Password1!',
+        ])
+            ->assertCreated()
+            ->assertJsonPath('success', true)
+            ->assertJsonPath('data.user.email', 'test@example.com');
     }
 
-    public function test_new_users_can_register(): void
+    public function test_registration_requires_strong_password(): void
     {
-        $response = $this->post('/register', [
+        $this->postJson('/api/v1/auth/register', [
             'name' => 'Test User',
             'email' => 'test@example.com',
             'password' => 'password',
             'password_confirmation' => 'password',
-        ]);
-
-        $this->assertAuthenticated();
-        $response->assertRedirect(route('dashboard', absolute: false));
+        ])
+            ->assertUnprocessable()
+            ->assertJsonPath('success', false);
     }
 }

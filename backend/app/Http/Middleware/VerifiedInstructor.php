@@ -14,12 +14,21 @@ class VerifiedInstructor
     {
         $user = auth()->user();
 
-        // Check if user is instructor and is verified
-        if ($user && $user->role === 'instructor') {
-            if (!$user->isVerifiedInstructor()) {
-                return redirect()->route('instructor.dashboard')
-                    ->with('error', 'You need to be verified as an instructor to access this feature.');
+        if (!$user) {
+            if ($request->is('api/*')) {
+                return response()->json(['message' => 'Unauthenticated'], 401);
             }
+
+            return redirect()->route('login');
+        }
+
+        if (!$user->isVerifiedInstructor()) {
+            if ($request->is('api/*')) {
+                return response()->json(['message' => 'Verified instructor access only'], 403);
+            }
+
+            return redirect()->route('instructor.dashboard')
+                ->with('error', 'You need to be verified as an instructor to access this feature.');
         }
 
         return $next($request);

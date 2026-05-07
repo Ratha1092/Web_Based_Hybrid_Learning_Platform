@@ -14,7 +14,7 @@ class LinkOAuthRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'email' => strtolower($this->email),
+            'email' => $this->email ? strtolower(trim($this->email)) : null,
         ]);
     }
 
@@ -25,6 +25,7 @@ class LinkOAuthRequest extends FormRequest
             'provider_id' => ['required', 'string'],
             'email' => ['required', 'email'],
             'name' => ['required', 'string'],
+            'avatar' => ['nullable', 'url'],
         ];
     }
 }

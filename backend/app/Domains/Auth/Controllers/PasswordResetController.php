@@ -31,7 +31,7 @@ class PasswordResetController extends Controller
      */
     public function verifyToken(VerifyResetTokenRequest $request)
     {
-        $this->resetService->verifyToken($request->validated());
+        $this->resetService->verifyToken($request->validated('token'));
 
         return ApiResponse::success(null, 'Token is valid');
     }
@@ -42,7 +42,9 @@ class PasswordResetController extends Controller
     public function resetPassword(ResetPasswordRequest $request)
     {
         try {
-            $this->resetService->resetPassword($request->validated());
+            $data = $request->validated();
+
+            $this->resetService->resetPassword($data['token'], $data['password']);
 
             ActivityLogService::log('password_changed');
 

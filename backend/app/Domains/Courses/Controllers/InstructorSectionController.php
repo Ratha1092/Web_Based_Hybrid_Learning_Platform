@@ -50,9 +50,11 @@ class InstructorSectionController extends Controller
         return ApiResponse::success($section, 'Section created successfully', 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $courseId, $sectionId)
     {
-        $section = Section::find($id);
+        $section = Section::where('id', $sectionId)
+            ->where('course_id', $courseId)
+            ->first();
 
         if (!$section) {
             return ApiResponse::error('Section not found', 404);
@@ -71,9 +73,11 @@ class InstructorSectionController extends Controller
         return ApiResponse::success($section, 'Section updated successfully');
     }
 
-    public function destroy($id)
+    public function destroy($courseId, $sectionId)
     {
-        $section = Section::find($id);
+        $section = Section::where('id', $sectionId)
+            ->where('course_id', $courseId)
+            ->first();
 
         if (!$section) {
             return ApiResponse::error('Section not found', 404);

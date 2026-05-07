@@ -16,7 +16,7 @@ class OAuthService
     {
         return DB::transaction(function () use ($data) {
             $provider = 'google';
-            $providerId = $data['id']; // 🔥 MUST exist
+            $providerId = $data['provider_id'];
 
             $oauthAccount = OAuthAccount::where('provider', $provider)
                 ->where('provider_id', $providerId)
@@ -64,6 +64,7 @@ class OAuthService
             'provider_id' => $data['provider_id'],
             'email' => $data['email'],
             'name' => $data['name'],
+            'avatar' => $data['avatar'] ?? null,
         ]);
     }
 

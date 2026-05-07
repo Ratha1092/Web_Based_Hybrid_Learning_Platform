@@ -10,10 +10,13 @@ class TwoFactorCode extends Model
 {
     protected $table = 'two_factor_codes';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'user_id',
         'code',
         'expires_at',
+        'used',
     ];
 
 

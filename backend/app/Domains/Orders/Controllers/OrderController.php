@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Domains\Orders\Services\OrderService;
 use App\Domains\Orders\Models\Order;
 use App\Support\ApiResponse;
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
@@ -16,19 +17,23 @@ class OrderController extends Controller
         $this->orderService = $orderService;
     }
 
-    public function store($courseId)
+    public function store(Request $request)
     {
-        try {
-            $order = $this->orderService->createOrder(auth()->user(), $courseId);
-            return ApiResponse::success($order, 'Order created successfully');
-        } catch (\Exception $e) {
-            return ApiResponse::error($e->getMessage(), 400);
-        }
+        $validated = $request->validate([
+            'course_id' => ['required', 'integer', 'exists:courses,id'],
+        ]);
+
+        $order = $this->orderService->createOrder($request->user(), $validated['course_id']);
+
+        return ApiResponse::success($order->load('items', 'payment'), 'Order created successfully', 201);
     }
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $order = Order::find($id);
+        $order = Order::with('items', 'payment')
+            ->where('id', $id)
+            ->where('user_id', $request->user()->id)
+            ->first();
 
         if (!$order) {
             return ApiResponse::error('Order not found', 404);

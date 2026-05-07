@@ -11,6 +11,29 @@ use Illuminate\Support\Str;
 class PasswordResetService
 {
     /**
+     * Request password reset without leaking whether an email exists.
+     */
+    public function requestReset(array $data): array
+    {
+        $user = User::where('email', $data['email'])->first();
+
+        if (!$user) {
+            return [];
+        }
+
+        $token = $this->generateToken($user)['token'];
+
+        if (app()->environment('production')) {
+            return [];
+        }
+
+        return [
+            'reset_link' => $this->getResetLink($token),
+            'token' => $token,
+        ];
+    }
+
+    /**
      * Generate password reset token
      */
     public function generateToken(User $user): array
@@ -36,6 +59,7 @@ class PasswordResetService
     public function resetPassword(string $token, string $newPassword): bool
     {
         $reset = PasswordResetToken::where('expires_at', '>', now())
+            ->where('used', false)
             ->get()
             ->first(function ($record) use ($token) {
                 return Hash::check($token, $record->token);
@@ -46,10 +70,7 @@ class PasswordResetService
         }
 
         return DB::transaction(function () use ($reset, $newPassword) {
-            // mark used if exists
-            if (isset($reset->used)) {
-                $reset->update(['used' => true]);
-            }
+            $reset->update(['used' => true]);
 
             $user = $reset->user;
 
@@ -80,9 +101,19 @@ class PasswordResetService
     public function isTokenValid(string $token): bool
     {
         return PasswordResetToken::where('expires_at', '>', now())
+            ->where('used', false)
             ->get()
             ->contains(function ($record) use ($token) {
                 return Hash::check($token, $record->token);
             });
+    }
+
+    public function verifyToken(string $token): bool
+    {
+        if (!$this->isTokenValid($token)) {
+            throw new \RuntimeException('Invalid or expired reset token');
+        }
+
+        return true;
     }
 }

@@ -10,9 +10,11 @@ use Illuminate\Http\Request;
 
 class InstructorLessonController extends Controller
 {
-    public function index($sectionId)
+    public function index($courseId, $sectionId)
     {
-        $section = Section::find($sectionId);
+        $section = Section::where('id', $sectionId)
+            ->where('course_id', $courseId)
+            ->first();
 
         if (!$section) {
             return ApiResponse::error('Section not found', 404);
@@ -29,9 +31,11 @@ class InstructorLessonController extends Controller
         return ApiResponse::success($lessons, 'Lessons retrieved successfully');
     }
 
-    public function store(Request $request, $sectionId)
+    public function store(Request $request, $courseId, $sectionId)
     {
-        $section = Section::find($sectionId);
+        $section = Section::where('id', $sectionId)
+            ->where('course_id', $courseId)
+            ->first();
 
         if (!$section) {
             return ApiResponse::error('Section not found', 404);
@@ -64,9 +68,12 @@ class InstructorLessonController extends Controller
         return ApiResponse::success($lesson, 'Lesson created successfully', 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $courseId, $sectionId, $lessonId)
     {
-        $lesson = Lesson::find($id);
+        $lesson = Lesson::where('id', $lessonId)
+            ->where('section_id', $sectionId)
+            ->whereHas('section', fn($query) => $query->where('course_id', $courseId))
+            ->first();
 
         if (!$lesson) {
             return ApiResponse::error('Lesson not found', 404);
@@ -90,9 +97,12 @@ class InstructorLessonController extends Controller
         return ApiResponse::success($lesson, 'Lesson updated successfully');
     }
 
-    public function destroy($id)
+    public function destroy($courseId, $sectionId, $lessonId)
     {
-        $lesson = Lesson::find($id);
+        $lesson = Lesson::where('id', $lessonId)
+            ->where('section_id', $sectionId)
+            ->whereHas('section', fn($query) => $query->where('course_id', $courseId))
+            ->first();
 
         if (!$lesson) {
             return ApiResponse::error('Lesson not found', 404);

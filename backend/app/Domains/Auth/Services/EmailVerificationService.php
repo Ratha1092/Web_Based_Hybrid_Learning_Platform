@@ -13,26 +13,33 @@ class EmailVerificationService
     /**
      * Generate verification token
      */
-    public function generateToken(User $user): EmailVerificationToken
+    public function generateToken(User $user): array
     {
         // Delete old tokens
         $user->emailVerificationTokens()->delete();
 
         $plainToken = Str::random(64);
 
-        return EmailVerificationToken::create([
+        $record = EmailVerificationToken::create([
             'user_id' => $user->id,
             'token' => Hash::make($plainToken), // 🔐 hashed
             'expires_at' => now()->addHours(24),
         ]);
+
+        return [
+            'record' => $record,
+            'token' => $plainToken,
+        ];
     }
 
     /**
      * Verify email with token
      */
-    public function verifyEmail(string $token): bool
+    public function verifyEmail(string $token): User
     {
-        $verification = EmailVerificationToken::where('expires_at', '>', now())->get()
+        $verification = EmailVerificationToken::where('expires_at', '>', now())
+            ->where('used', false)
+            ->get()
             ->first(function ($record) use ($token) {
                 return Hash::check($token, $record->token);
             });
@@ -42,16 +49,13 @@ class EmailVerificationService
         }
 
         return DB::transaction(function () use ($verification) {
-            // Mark as used if column exists
-            if (isset($verification->used)) {
-                $verification->update(['used' => true]);
-            }
+            $verification->update(['used' => true]);
 
             $verification->user->update([
                 'email_verified_at' => now()
             ]);
 
-            return true;
+            return $verification->user->refresh();
         });
     }
 

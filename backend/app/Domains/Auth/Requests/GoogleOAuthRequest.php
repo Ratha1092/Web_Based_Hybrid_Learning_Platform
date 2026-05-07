@@ -14,7 +14,7 @@ class GoogleOAuthRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'email' => strtolower($this->email),
+            'email' => $this->email ? strtolower(trim($this->email)) : null,
         ]);
     }
 
@@ -22,8 +22,10 @@ class GoogleOAuthRequest extends FormRequest
     {
         return [
             'id_token' => ['required', 'string'],
+            'provider_id' => ['required', 'string'],
             'email' => ['required', 'email'],
             'name' => ['required', 'string'],
+            'avatar' => ['nullable', 'url'],
         ];
     }
 }

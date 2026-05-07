@@ -10,10 +10,13 @@ class EmailVerificationToken extends Model
 {
     protected $table = 'email_verification_tokens';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'user_id',
         'token',
         'expires_at',
+        'used',
     ];
     protected $casts = [
         'expires_at' => 'datetime',

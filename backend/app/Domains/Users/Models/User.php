@@ -3,6 +3,7 @@
 namespace App\Domains\Users\Models;
 
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -24,14 +25,19 @@ use App\Domains\Auth\Models\PasswordResetToken;
 use App\Domains\Auth\Models\TwoFactorCode;
 use App\Domains\Auth\Models\ActivityLog;
 use App\Domains\Auth\Models\OAuthAccount;
+use Database\Factories\UserFactory;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {   
-    use Notifiable, HasApiTokens;
+    use HasFactory, Notifiable, HasApiTokens, SoftDeletes;
 
     protected $fillable = [
         'name',
         'email',
+        'email_verified_at',
         'password',
         'avatar',
         'phone',
@@ -39,6 +45,8 @@ class User extends Authenticatable
         'instructor_status',
         'status',
         'last_login_at',
+        'two_factor_enabled',
+        'two_factor_secret',
         'oauth_provider',
         'oauth_id',
         'oauth_avatar',
@@ -48,6 +56,18 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'last_login_at' => 'datetime',
+        'two_factor_enabled' => 'boolean',
+        'password' => 'hashed',
+    ];
+
+    protected static function newFactory(): UserFactory
+    {
+        return UserFactory::new();
+    }
 
     /**
      * Courses created by instructor
@@ -199,5 +219,13 @@ class User extends Authenticatable
     public function canCreateCourses(): bool
     {
         return $this->isVerifiedInstructor();
+    }
+
+    /**
+     * Determine whether the user can access Filament panels.
+     */
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $panel->getId() === 'admin' && $this->role === 'admin';
     }
 }

@@ -18,6 +18,7 @@ class CourseController extends Controller
     public function show($slug)
     {
         $course = Course::where('slug', $slug)
+            ->where('is_published', true)
             ->with('sections.lessons')
             ->first();
 
