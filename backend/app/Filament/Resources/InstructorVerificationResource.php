@@ -12,7 +12,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Notifications\Notification;
-use App\Filament\Resources\InstructorVerificationResource\Pages;
+use App\Filament\Resources\InstructorVerifications\Pages;
 use Filament\Schemas\Schema;
 use Filament\Actions;
 use BackedEnum;
@@ -22,15 +22,10 @@ use Filament\Tables\Table;
 class InstructorVerificationResource extends Resource
 {
     protected static ?string $model = InstructorVerification::class;
-
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document-check';
-
     protected static ?string $navigationLabel = 'Instructor Verifications';
-
     protected static string|\UnitEnum|null $navigationGroup = 'User Management';
-
     protected static ?int $navigationSort = 3;
-
     public static function form(Schema $schema): Schema
     {
         return $schema->schema([

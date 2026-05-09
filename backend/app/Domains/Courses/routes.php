@@ -19,6 +19,7 @@ Route::middleware(['auth:sanctum', 'verified_instructor'])->prefix('instructor/c
     Route::put('/{id}', [InstructorCourseController::class, 'update']);
     Route::delete('/{id}', [InstructorCourseController::class, 'destroy']);
     Route::get('/{id}', [InstructorCourseController::class, 'show']);
+    Route::post('/{id}/submit-review',[InstructorCourseController::class, 'submitForReview']);
 
     // Sections
     Route::prefix('{courseId}/sections')->group(function () {

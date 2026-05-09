@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\InstructorVerificationResource\Pages;
+namespace App\Filament\Resources\InstructorVerifications\Pages;
 
 use App\Filament\Resources\InstructorVerificationResource;
 use Filament\Actions;

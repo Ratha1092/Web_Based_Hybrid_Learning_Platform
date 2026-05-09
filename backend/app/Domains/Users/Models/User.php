@@ -4,9 +4,15 @@ namespace App\Domains\Users\Models;
 
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Spatie\Permission\Traits\HasRoles;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
+use Database\Factories\UserFactory;
 use App\Domains\Courses\Models\Course;
 use App\Domains\Learning\Models\Enrollment;
 use App\Domains\Learning\Models\LessonProgress;
@@ -25,38 +31,49 @@ use App\Domains\Auth\Models\PasswordResetToken;
 use App\Domains\Auth\Models\TwoFactorCode;
 use App\Domains\Auth\Models\ActivityLog;
 use App\Domains\Auth\Models\OAuthAccount;
-use Database\Factories\UserFactory;
-use Filament\Models\Contracts\FilamentUser;
-use Filament\Panel;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable implements FilamentUser
-{   
-    use HasFactory, Notifiable, HasApiTokens, SoftDeletes;
+{
+    use HasFactory;
+    use Notifiable;
+    use HasApiTokens;
+    use SoftDeletes;
+    use HasRoles;
+
+    public const STATUS_ACTIVE = 'active';
+    public const STATUS_SUSPENDED = 'suspended';
+    public const INSTRUCTOR_NONE = 'not_instructor';
+    public const INSTRUCTOR_PENDING = 'pending';
+    public const INSTRUCTOR_VERIFIED = 'verified';
+    public const INSTRUCTOR_REJECTED = 'rejected';
 
     protected $fillable = [
         'name',
         'email',
         'email_verified_at',
         'password',
+
         'avatar',
         'phone',
+
         'role',
         'instructor_status',
         'status',
+
         'last_login_at',
+
         'two_factor_enabled',
         'two_factor_secret',
+
         'oauth_provider',
         'oauth_id',
         'oauth_avatar',
     ];
-
     protected $hidden = [
         'password',
         'remember_token',
+        'two_factor_secret',
     ];
-
     protected $casts = [
         'email_verified_at' => 'datetime',
         'last_login_at' => 'datetime',
@@ -69,163 +86,151 @@ class User extends Authenticatable implements FilamentUser
         return UserFactory::new();
     }
 
-    /**
-     * Courses created by instructor
-     */
-    public function courses()
+    public function courses(): HasMany
     {
         return $this->hasMany(Course::class, 'instructor_id');
     }
 
-    /**
-     * Courses the student enrolled in
-     */
-    public function enrollments()
+    public function enrollments(): HasMany
     {
         return $this->hasMany(Enrollment::class);
     }
 
-    /**
-     * Lesson progress tracking
-     */
-    public function lessonProgress()
+    public function lessonProgress(): HasMany
     {
         return $this->hasMany(LessonProgress::class);
     }
 
-    /**
-     * Reviews written by the user
-     */
-    public function reviews()
+    public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
     }
 
-    /**
-     * Wishlist courses
-     */
-    public function wishlists()
+    public function wishlists(): HasMany
     {
         return $this->hasMany(Wishlist::class);
     }
 
-    /**
-     * Orders created by user
-     */
-    public function orders()
+    public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
     }
-    public function courseViews()
+
+    public function courseViews(): HasMany
     {
         return $this->hasMany(CourseView::class);
     }
-    public function revenueShares()
+
+    public function revenueShares(): HasMany
     {
         return $this->hasMany(RevenueShare::class, 'instructor_id');
     }
-    public function wallet()
+
+    public function wallet(): HasOne
     {
         return $this->hasOne(InstructorWallet::class, 'instructor_id');
     }
-    public function payoutRequests()
+
+    public function payoutRequests(): HasMany
     {
         return $this->hasMany(PayoutRequest::class, 'instructor_id');
     }
-    public function instructorProfile()
+
+    public function instructorProfile(): HasOne
     {
         return $this->hasOne(InstructorProfile::class);
     }
-    public function studentProfile()
+
+    public function studentProfile(): HasOne
     {
         return $this->hasOne(StudentProfile::class);
     }
 
-    /**
-     * Instructor verification request
-     */
-    public function instructorVerification()
+    public function instructorVerification(): HasOne
     {
         return $this->hasOne(InstructorVerification::class);
     }
 
-    /**
-     * Check if user is a verified instructor
-     */
-    public function isVerifiedInstructor(): bool
-    {
-        return $this->role === 'instructor' && $this->instructor_status === 'verified';
-    }
-
-    /**
-     * Check if instructor verification is pending
-     */
-    public function hasVerificationPending(): bool
-    {
-        return $this->role === 'instructor' && $this->instructor_status === 'pending';
-    }
-
-    /**
-     * Check if verification was rejected
-     */
-    public function hasVerificationRejected(): bool
-    {
-        return $this->role === 'instructor' && $this->instructor_status === 'rejected';
-    }
-
-    /**
-     * Email verification tokens
-     */
-    public function emailVerificationTokens()
+    public function emailVerificationTokens(): HasMany
     {
         return $this->hasMany(EmailVerificationToken::class);
     }
 
-    /**
-     * Password reset tokens
-     */
-    public function passwordResetTokens()
+    public function passwordResetTokens(): HasMany
     {
         return $this->hasMany(PasswordResetToken::class);
     }
 
-    /**
-     * Two factor codes
-     */
-    public function twoFactorCodes()
+    public function twoFactorCodes(): HasMany
     {
         return $this->hasMany(TwoFactorCode::class);
     }
 
-    /**
-     * Activity logs
-     */
-    public function activityLogs()
+    public function activityLogs(): HasMany
     {
         return $this->hasMany(ActivityLog::class);
     }
 
-    /**
-     * OAuth accounts
-     */
-    public function oauthAccounts()
+    public function oauthAccounts(): HasMany
     {
         return $this->hasMany(OAuthAccount::class);
     }
 
-    /**
-     * Can create courses (verified instructor)
-     */
+    public function isAdmin(): bool
+    {
+        return $this->hasRole('admin');
+    }
+
+    public function isInstructor(): bool
+    {
+        return $this->hasRole('instructor');
+    }
+
+    public function isStudent(): bool
+    {
+        return $this->hasRole('student');
+    }
+
+    public function isVerifiedInstructor(): bool
+    {
+        return $this->hasRole('instructor')
+            && $this->instructor_status === self::INSTRUCTOR_VERIFIED;
+    }
+
+    public function hasVerificationPending(): bool
+    {
+        return $this->hasRole('instructor')
+            && $this->instructor_status === self::INSTRUCTOR_PENDING;
+    }
+
+    public function hasVerificationRejected(): bool
+    {
+        return $this->hasRole('instructor')
+            && $this->instructor_status === self::INSTRUCTOR_REJECTED;
+    }
+
     public function canCreateCourses(): bool
     {
         return $this->isVerifiedInstructor();
     }
 
-    /**
-     * Determine whether the user can access Filament panels.
-     */
+    public function scopeAdmins($query)
+    {
+        return $query->role('admin');
+    }
+
+    public function scopeInstructors($query)
+    {
+        return $query->role('instructor');
+    }
+
+    public function scopeStudents($query)
+    {
+        return $query->role('student');
+    }
     public function canAccessPanel(Panel $panel): bool
     {
-        return $panel->getId() === 'admin' && $this->role === 'admin';
+        return $panel->getId() === 'admin'
+            && $this->hasRole('admin');
     }
 }
