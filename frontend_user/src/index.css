@@ -1,3 +1,7 @@
+/* ─── FONTS ──────────────────────────────────────────────────────────────── */
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap");
+
+/* ─── VARIABLES ──────────────────────────────────────────────────────────── */
 /* ─── GLOBAL RESET ──────────────────────────────────────────────────────── */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -18,10 +22,6 @@ body {
   min-height: 100vh;
 }
 
-/* ─── FONTS ──────────────────────────────────────────────────────────────── */
-@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap");
-
-/* ─── VARIABLES ──────────────────────────────────────────────────────────── */
 :root {
   --teal: #2ec4b6;
   --teal-dark: #1da89c;

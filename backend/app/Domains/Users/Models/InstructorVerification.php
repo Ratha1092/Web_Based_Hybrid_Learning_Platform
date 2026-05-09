@@ -4,6 +4,7 @@ namespace App\Domains\Users\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Domains\Users\Models\User;
 
 class InstructorVerification extends Model
 {
