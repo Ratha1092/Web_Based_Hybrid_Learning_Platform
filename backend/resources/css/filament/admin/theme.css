@@ -1,0 +1,598 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Sora:wght@400;500;600&display=swap');
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@source '../../../../app/Filament/**/*';
+@source '../../../../resources/views/filament/**/*';
+
+/* ================================================================
+   FILAMENT PRIMARY COLOR — Amber/Gold (replaces default violet)
+   Values are R G B channel triplets (no commas)
+   ================================================================ */
+:root {
+    --fi-color-primary-50:  255 251 235;
+    --fi-color-primary-100: 254 243 199;
+    --fi-color-primary-200: 253 230 138;
+    --fi-color-primary-300: 252 211 77;
+    --fi-color-primary-400: 251 191 36;
+    --fi-color-primary-500: 245 158 11;
+    --fi-color-primary-600: 217 119 6;
+    --fi-color-primary-700: 180 83 9;
+    --fi-color-primary-800: 146 64 14;
+    --fi-color-primary-900: 120 53 15;
+    --fi-color-primary-950: 69 26 3;
+}
+
+/* ================================================================
+   DESIGN TOKENS — LIGHT MODE (default)
+   ================================================================ */
+:root {
+    --lh-gold:         #b8860b;
+    --lh-gold-lt:      #d4a017;
+    --lh-gold-soft:    rgba(184,134,11,0.08);
+    --lh-gold-border:  rgba(184,134,11,0.25);
+
+    --lh-bg:           #f8f8f8;
+    --lh-bg-2:         #f3f4f6;
+    --lh-sidebar:      #ffffff;
+    --lh-sidebar-2:    #f8f8f8;
+    --lh-card:         #ffffff;
+    --lh-topbar:       rgba(255,255,255,0.98);
+
+    --lh-border:       rgba(0,0,0,0.1);
+    --lh-border-2:     rgba(0,0,0,0.08);
+
+    --lh-text:         #0f172a;
+    --lh-text-soft:    #334155;
+    --lh-text-muted:   #94a3b8;
+
+    --lh-shadow-sm:    0 2px 8px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05);
+    --lh-shadow-md:    0 4px 16px rgba(0,0,0,0.1);
+    --lh-shadow-lg:    0 10px 40px rgba(0,0,0,0.12);
+
+    --lh-body:         'Sora', system-ui, sans-serif;
+    --lh-disp:         'Cormorant Garamond', Georgia, serif;
+}
+
+/* ================================================================
+   DESIGN TOKENS — DARK MODE
+   Filament adds class="dark" to <html> when dark mode is active
+   ================================================================ */
+.dark {
+    --lh-gold:         #fbbf24;
+    --lh-gold-lt:      #fde68a;
+    --lh-gold-soft:    rgba(251,191,36,0.11);
+    --lh-gold-border:  rgba(251,191,36,0.18);
+
+    --lh-bg:           #020817;
+    --lh-bg-2:         #0d1425;
+    --lh-sidebar:      #071224;
+    --lh-sidebar-2:    #0b1324;
+    --lh-card:         #0f172a;
+    --lh-topbar:       rgba(7,18,36,0.97);
+
+    --lh-border:       rgba(255,255,255,0.07);
+    --lh-border-2:     rgba(255,255,255,0.04);
+
+    --lh-text:         rgba(255,255,255,0.93);
+    --lh-text-soft:    rgba(255,255,255,0.65);
+    --lh-text-muted:   rgba(255,255,255,0.38);
+
+    --lh-shadow-sm:    0 1px 3px rgba(0,0,0,0.3);
+    --lh-shadow-md:    0 4px 16px rgba(0,0,0,0.4);
+    --lh-shadow-lg:    0 10px 40px rgba(0,0,0,0.5);
+}
+
+/* ================================================================
+   GLOBAL
+   ================================================================ */
+body, .fi-body {
+    background-color: var(--lh-bg) !important;
+    color: var(--lh-text) !important;
+    font-family: var(--lh-body) !important;
+}
+
+/* ================================================================
+   TOP BAR
+   ================================================================ */
+.fi-topbar {
+    background-color: var(--lh-topbar) !important;
+    border-bottom: 1px solid var(--lh-border) !important;
+    backdrop-filter: blur(12px) !important;
+    box-shadow: var(--lh-shadow-sm) !important;
+}
+
+.fi-brand-name {
+    font-family: var(--lh-disp) !important;
+    font-size: 22px !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em !important;
+    color: var(--lh-gold) !important;
+}
+
+/* Search */
+.fi-global-search-field .fi-input-wrp {
+    background-color: var(--lh-bg-2) !important;
+    border: 1px solid var(--lh-border) !important;
+    border-radius: 14px !important;
+    transition: border .2s, box-shadow .2s, background .2s !important;
+}
+.fi-global-search-field .fi-input-wrp:focus-within {
+    border-color: var(--lh-gold) !important;
+    box-shadow: 0 0 0 3px var(--lh-gold-soft) !important;
+    background-color: var(--lh-card) !important;
+}
+.fi-global-search-field input {
+    background-color: transparent !important;
+    border: none !important;
+    color: var(--lh-text) !important;
+    font-family: var(--lh-body) !important;
+    font-size: 14px !important;
+    box-shadow: none !important;
+}
+.fi-global-search-field input::placeholder {
+    color: var(--lh-text-muted) !important;
+}
+.fi-global-search-field svg {
+    color: var(--lh-text-muted) !important;
+}
+
+/* User avatar */
+.fi-user-avatar, .fi-avatar {
+    background: linear-gradient(135deg, var(--lh-gold-lt), var(--lh-gold)) !important;
+    color: #1c1917 !important;
+    font-weight: 700 !important;
+    border: 2px solid var(--lh-gold-border) !important;
+}
+
+/* ================================================================
+   SIDEBAR
+   ================================================================ */
+.fi-sidebar {
+    background: linear-gradient(180deg, var(--lh-sidebar) 0%, var(--lh-sidebar-2) 100%) !important;
+    border-right: 1px solid var(--lh-border) !important;
+    box-shadow: var(--lh-shadow-sm) !important;
+}
+
+.fi-sidebar-header {
+    padding: 18px !important;
+    border-bottom: 1px solid var(--lh-border-2) !important;
+    background: transparent !important;
+}
+
+.fi-sidebar-footer {
+    padding: 12px !important;
+    border-top: 1px solid var(--lh-border-2) !important;
+    background: transparent !important;
+}
+
+/* ================================================================
+   NAV GROUP LABELS
+   ================================================================ */
+.fi-sidebar-nav {
+    padding: 14px 10px !important;
+}
+
+.fi-nav-group-label {
+    padding: 8px 14px 3px !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.11em !important;
+    color: var(--lh-text-muted) !important;
+    font-family: var(--lh-body) !important;
+}
+
+.fi-nav-group-collapse-btn {
+    padding: 8px 14px 3px !important;
+}
+.fi-nav-group-collapse-btn svg {
+    color: var(--lh-text-muted) !important;
+}
+
+.fi-nav-group-items {
+    gap: 2px !important;
+    padding-bottom: 4px !important;
+}
+
+/* ================================================================
+   NAV ITEMS
+   ================================================================ */
+.fi-nav-item a,
+.fi-nav-item button {
+    padding: 9px 12px !important;
+    border-radius: 12px !important;
+    color: var(--lh-text-soft) !important;
+    font-family: var(--lh-body) !important;
+    font-size: 13.5px !important;
+    font-weight: 500 !important;
+    transition: background .18s, color .18s !important;
+    position: relative !important;
+}
+
+/* Icon — color only, NO size override */
+.fi-nav-item a svg,
+.fi-nav-item button svg {
+    color: var(--lh-text-muted) !important;
+    flex-shrink: 0 !important;
+    transition: color .18s !important;
+}
+
+/* Hover */
+.fi-nav-item a:hover,
+.fi-nav-item button:hover {
+    background-color: var(--lh-gold-soft) !important;
+    color: var(--lh-gold) !important;
+}
+.fi-nav-item a:hover svg,
+.fi-nav-item button:hover svg {
+    color: var(--lh-gold) !important;
+}
+
+/* Active */
+.fi-nav-item-active a,
+.fi-nav-item.fi-active a,
+.fi-nav-item a[aria-current="page"] {
+    background-color: var(--lh-gold-soft) !important;
+    border: 1px solid var(--lh-gold-border) !important;
+    color: var(--lh-gold) !important;
+    box-shadow: inset 3px 0 0 var(--lh-gold) !important;
+    font-weight: 600 !important;
+}
+.fi-nav-item-active a svg,
+.fi-nav-item.fi-active a svg,
+.fi-nav-item a[aria-current="page"] svg {
+    color: var(--lh-gold) !important;
+}
+
+/* ================================================================
+   MAIN CONTENT
+   ================================================================ */
+.fi-main {
+    background-color: var(--lh-bg) !important;
+}
+
+.fi-page-header {
+    border-bottom: 1px solid var(--lh-border-2) !important;
+}
+
+.fi-page-header h1,
+.fi-page-header .fi-page-heading {
+    font-family: var(--lh-disp) !important;
+    font-size: 32px !important;
+    font-weight: 700 !important;
+    color: var(--lh-text) !important;
+    letter-spacing: -0.01em !important;
+}
+
+/* ================================================================
+   TABLES
+   ================================================================ */
+.fi-ta-ctn, .fi-ta-content {
+    background-color: var(--lh-card) !important;
+    border: 1px solid var(--lh-border) !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    box-shadow: var(--lh-shadow-sm) !important;
+}
+.fi-ta-header-cell {
+    background-color: var(--lh-bg-2) !important;
+    color: var(--lh-text-muted) !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+    font-family: var(--lh-body) !important;
+    border-bottom: 1px solid var(--lh-border) !important;
+}
+.fi-ta-row {
+    background-color: var(--lh-card) !important;
+    border-bottom: 1px solid var(--lh-border-2) !important;
+    transition: background .13s !important;
+}
+.fi-ta-row:hover {
+    background-color: var(--lh-gold-soft) !important;
+}
+.fi-ta-cell {
+    color: var(--lh-text-soft) !important;
+    font-family: var(--lh-body) !important;
+    font-size: 13.5px !important;
+}
+
+/* Pagination */
+.fi-pagination {
+    background-color: var(--lh-card) !important;
+    border-top: 1px solid var(--lh-border-2) !important;
+}
+
+/* ================================================================
+   SECTIONS / CARDS
+   ================================================================ */
+.fi-section, .fi-card {
+    background-color: var(--lh-card) !important;
+    border: 1px solid var(--lh-border) !important;
+    border-radius: 18px !important;
+    box-shadow: var(--lh-shadow-sm) !important;
+}
+.fi-section-header {
+    border-bottom: 1px solid var(--lh-border-2) !important;
+}
+.fi-section-header-heading {
+    font-family: var(--lh-body) !important;
+    font-weight: 600 !important;
+    color: var(--lh-text) !important;
+}
+
+/* ================================================================
+   FORMS
+   ================================================================ */
+.fi-input-wrp {
+    background-color: var(--lh-bg-2) !important;
+    border-color: var(--lh-border) !important;
+    border-radius: 12px !important;
+    transition: border .2s, box-shadow .2s !important;
+}
+.fi-input-wrp:focus-within {
+    border-color: var(--lh-gold) !important;
+    box-shadow: 0 0 0 3px var(--lh-gold-soft) !important;
+    background-color: var(--lh-card) !important;
+}
+.fi-input {
+    background-color: transparent !important;
+    color: var(--lh-text) !important;
+    font-family: var(--lh-body) !important;
+}
+.fi-input::placeholder {
+    color: var(--lh-text-muted) !important;
+}
+
+.fi-fo-label {
+    color: var(--lh-text-muted) !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+    font-family: var(--lh-body) !important;
+}
+
+/* ================================================================
+   BUTTONS
+   ================================================================ */
+.fi-btn-color-primary,
+.fi-btn[data-color="primary"] {
+    background: linear-gradient(135deg, var(--lh-gold-lt), var(--lh-gold)) !important;
+    color: #1c1917 !important;
+    border: none !important;
+    font-weight: 600 !important;
+    font-family: var(--lh-body) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px var(--lh-gold-soft) !important;
+    transition: transform .14s, box-shadow .2s !important;
+}
+.fi-btn-color-primary:hover,
+.fi-btn[data-color="primary"]:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 20px rgba(217,119,6,0.3) !important;
+}
+
+/* ================================================================
+   DROPDOWNS
+   ================================================================ */
+.fi-dropdown-panel, .fi-ac-dropdown-panel {
+    background-color: var(--lh-card) !important;
+    border: 1px solid var(--lh-border) !important;
+    border-radius: 14px !important;
+    box-shadow: var(--lh-shadow-lg) !important;
+}
+.fi-dropdown-list-item button {
+    color: var(--lh-text-soft) !important;
+    font-family: var(--lh-body) !important;
+    font-size: 13px !important;
+    border-radius: 8px !important;
+    transition: background .15s, color .15s !important;
+}
+.fi-dropdown-list-item button:hover {
+    background-color: var(--lh-gold-soft) !important;
+    color: var(--lh-gold) !important;
+}
+
+/* ================================================================
+   MODAL
+   ================================================================ */
+.fi-modal-window {
+    background-color: var(--lh-card) !important;
+    border: 1px solid var(--lh-border) !important;
+    border-radius: 20px !important;
+    box-shadow: var(--lh-shadow-lg) !important;
+}
+.fi-modal-header-heading {
+    font-family: var(--lh-disp) !important;
+    font-size: 22px !important;
+    font-weight: 700 !important;
+    color: var(--lh-text) !important;
+}
+
+/* ================================================================
+   NOTIFICATIONS
+   ================================================================ */
+.fi-notification {
+    background-color: var(--lh-card) !important;
+    border: 1px solid var(--lh-border) !important;
+    border-radius: 14px !important;
+    box-shadow: var(--lh-shadow-md) !important;
+    font-family: var(--lh-body) !important;
+    color: var(--lh-text) !important;
+}
+
+/* ================================================================
+   TABS
+   ================================================================ */
+.fi-tabs-tab {
+    font-family: var(--lh-body) !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    color: var(--lh-text-muted) !important;
+    transition: color .15s !important;
+}
+.fi-tabs-tab:hover { color: var(--lh-text-soft) !important; }
+.fi-tabs-tab[aria-selected="true"] {
+    color: var(--lh-gold) !important;
+    border-bottom-color: var(--lh-gold) !important;
+    font-weight: 600 !important;
+}
+
+/* ================================================================
+   BADGES
+   ================================================================ */
+.fi-badge { border-radius: 999px !important; font-family: var(--lh-body) !important; }
+
+/* ================================================================
+   SCROLLBAR
+   ================================================================ */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+    background: var(--lh-gold-soft);
+    border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(217,119,6,0.3);
+}
+
+/* ================================================================
+   LIGHT MODE ENHANCEMENTS
+   ================================================================ */
+
+/* Better shadows for light mode depth */
+html:not(.dark) {
+    --lh-shadow-sm: 0 2px 8px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+    --lh-shadow-md: 0 4px 16px rgba(0,0,0,0.1);
+    --lh-shadow-lg: 0 10px 40px rgba(0,0,0,0.12);
+}
+
+/* Ensure cards have proper contrast in light mode */
+html:not(.dark) .fi-ta-ctn,
+html:not(.dark) .fi-ta-content,
+html:not(.dark) .fi-section,
+html:not(.dark) .fi-card,
+html:not(.dark) .fi-modal-window,
+html:not(.dark) .fi-dropdown-panel,
+html:not(.dark) .fi-ac-dropdown-panel,
+html:not(.dark) .fi-notification {
+    background-color: #ffffff !important;
+    border-color: rgba(0,0,0,0.1) !important;
+}
+
+/* Better hover states for light mode */
+html:not(.dark) .fi-ta-row:hover {
+    background-color: rgba(184,134,11,0.06) !important;
+}
+
+html:not(.dark) .fi-nav-item a:hover,
+html:not(.dark) .fi-nav-item button:hover {
+    background-color: rgba(184,134,11,0.08) !important;
+}
+
+html:not(.dark) .fi-dropdown-list-item button:hover {
+    background-color: rgba(184,134,11,0.08) !important;
+}
+
+/* Light mode form improvements */
+html:not(.dark) .fi-input-wrp {
+    background-color: #f3f4f6 !important;
+    border-color: rgba(0,0,0,0.1) !important;
+}
+
+html:not(.dark) .fi-input-wrp:focus-within {
+    background-color: #ffffff !important;
+    border-color: #b8860b !important;
+    box-shadow: 0 0 0 3px rgba(184,134,11,0.1) !important;
+}
+
+/* Improve light mode input text */
+html:not(.dark) .fi-input,
+html:not(.dark) .fi-input-wrp input,
+html:not(.dark) .fi-input-wrp textarea,
+html:not(.dark) .fi-input-wrp select {
+    color: #0f172a !important;
+}
+
+html:not(.dark) .fi-input::placeholder,
+html:not(.dark) .fi-input-wrp input::placeholder,
+html:not(.dark) .fi-input-wrp textarea::placeholder {
+    color: #94a3b8 !important;
+}
+
+/* Light mode button improvements */
+html:not(.dark) .fi-btn-color-primary,
+html:not(.dark) .fi-btn[data-color="primary"] {
+    color: #1c1917 !important;
+    box-shadow: 0 4px 12px rgba(184,134,11,0.2) !important;
+}
+
+html:not(.dark) .fi-btn-color-primary:hover,
+html:not(.dark) .fi-btn[data-color="primary"]:hover {
+    box-shadow: 0 8px 16px rgba(184,134,11,0.25) !important;
+}
+
+/* Light mode header text */
+html:not(.dark) .fi-page-header h1,
+html:not(.dark) .fi-page-header .fi-page-heading {
+    color: #0f172a !important;
+}
+
+/* Light mode label and text */
+html:not(.dark) .fi-fo-label,
+html:not(.dark) .fi-section-header-heading,
+html:not(.dark) .fi-modal-header-heading,
+html:not(.dark) .fi-panel-title,
+html:not(.dark) .fi-tabs-tab {
+    color: #0f172a !important;
+}
+
+/* Light mode table headers */
+html:not(.dark) .fi-ta-header-cell {
+    background-color: #f3f4f6 !important;
+    color: #475569 !important;
+    border-color: rgba(0,0,0,0.08) !important;
+}
+
+/* Light mode table cells */
+html:not(.dark) .fi-ta-cell {
+    color: #334155 !important;
+}
+
+/* Light mode nav items */
+html:not(.dark) .fi-nav-item a,
+html:not(.dark) .fi-nav-item button {
+    color: #475569 !important;
+}
+
+html:not(.dark) .fi-nav-item a svg,
+html:not(.dark) .fi-nav-item button svg {
+    color: #94a3b8 !important;
+}
+
+html:not(.dark) .fi-nav-group-label {
+    color: #94a3b8 !important;
+}
+
+/* Light mode badges */
+html:not(.dark) .fi-badge {
+    color: #0f172a !important;
+    background-color: rgba(184,134,11,0.08) !important;
+}
+
+/* Light mode select and checkbox */
+html:not(.dark) input[type="checkbox"],
+html:not(.dark) input[type="radio"],
+html:not(.dark) select {
+    background-color: #f3f4f6 !important;
+    border-color: rgba(0,0,0,0.1) !important;
+    color: #0f172a !important;
+}
+
+html:not(.dark) input[type="checkbox"]:checked,
+html:not(.dark) input[type="radio"]:checked {
+    background-color: #b8860b !important;
+    border-color: #b8860b !important;
+}

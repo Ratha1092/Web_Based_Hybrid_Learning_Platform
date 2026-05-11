@@ -21,9 +21,7 @@ class CourseForm
         return $schema
             ->components([
                 Section::make('Basic Information')
-
                     ->schema([
-
                         TextInput::make('title')
                             ->required()
                             ->maxLength(255),
