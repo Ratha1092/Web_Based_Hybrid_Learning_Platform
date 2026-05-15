@@ -26,25 +26,16 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-
-            // Theme mode: follows OS by default, user can override
             ->defaultThemeMode(ThemeMode::System)
-
-            // Brand 
-            ->brandName('LearnHub')
-
-            // Vite theme 
+            ->brandName('Hybrid Learning')
+            ->sidebarFullyCollapsibleOnDesktop()
+            ->sidebarWidth('13rem')
+            ->maxContentWidth('full')
             ->viteTheme('resources/css/filament/admin/theme.css')
-
-            // Auth
             ->login(\App\Filament\Auth\Pages\Login::class)
-
-            // Colors
             ->colors([
                 'primary' => Color::Amber,
             ])
-
-            // Resources & Page
             ->discoverResources(
                 in: app_path('Filament/Resources'),
                 for: 'App\\Filament\\Resources'
@@ -56,15 +47,11 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Dashboard::class,
             ])
-
-            // Widgets
             ->discoverWidgets(
                 in: app_path('Filament/Widgets'),
                 for: 'App\\Filament\\Widgets'
             )
             ->widgets([])
-
-            // Middleware 
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -78,6 +65,31 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+
+            // ─── HAMBURGER TOGGLE (no new files) ───
+            ->renderHook(
+                'panels::body.end',
+                fn (): string => '
+                    <script>
+                    document.addEventListener("DOMContentLoaded", () => {
+                        const btn = document.querySelector(".fi-topbar-open-sidebar-btn");
+                        if (!btn) return;
+
+                        btn.addEventListener("click", (e) => {
+                            const store = window.Alpine?.store("sidebar");
+                            if (!store) return;
+
+                            e.preventDefault();
+                            e.stopPropagation();
+                            e.stopImmediatePropagation();
+
+                            if (store.isOpen || store.opened) store.close();
+                            else store.open();
+                        }, true);
+                    });
+                    </script>
+                '
+            );
     }
 }

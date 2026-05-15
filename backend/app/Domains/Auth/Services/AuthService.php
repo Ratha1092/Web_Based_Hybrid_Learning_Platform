@@ -4,6 +4,7 @@ namespace App\Domains\Auth\Services;
 
 use App\Domains\Users\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use App\Domains\Auth\Services\ActivityLogService;
 use App\Domains\Auth\Resources\UserResource;
 
@@ -37,7 +38,9 @@ class AuthService
                 ActivityLogService::log('failed_login', $user);
             }
 
-            throw new \RuntimeException('Invalid credentials');
+            throw ValidationException::withMessages([
+                'email' => ['Invalid credentials'],
+            ]);
         }
 
         if ($user->two_factor_enabled) {
@@ -55,6 +58,10 @@ class AuthService
             return $response;
         }
 
+        // Remove old tokens
+        $user->tokens()->delete();
+
+        // Create fresh token
         $token = $user->createToken('api-token')->plainTextToken;
 
         ActivityLogService::log('login', $user);

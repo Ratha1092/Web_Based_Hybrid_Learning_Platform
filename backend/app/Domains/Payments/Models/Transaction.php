@@ -3,16 +3,20 @@
 namespace App\Domains\Payments\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Domains\Payments\Models\Payment;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Transaction extends Model
 {
     protected $fillable = [
         'payment_id',
         'gateway',
-        'transaction_id',
+        'event_type',
         'status',
-        'payload'
+        'payload',
+    ];
+
+    protected $casts = [
+        'payload' => 'array',
     ];
 
     /*
@@ -21,7 +25,7 @@ class Transaction extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function payment()
+    public function payment(): BelongsTo
     {
         return $this->belongsTo(Payment::class);
     }

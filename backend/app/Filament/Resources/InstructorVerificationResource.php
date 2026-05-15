@@ -29,17 +29,22 @@ class InstructorVerificationResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->schema([
-            Section::make('Applicant Information')->schema([
-                Forms\Components\TextInput::make('user.name')
-                    ->label('Instructor Name')
-                    ->disabled()
-                    ->columnSpan('full'),
-                Forms\Components\TextInput::make('user.email')
-                    ->label('Email')
-                    ->disabled()
-                    ->columnSpan('full'),
-            ]),
-
+            Section::make('Applicant Information')
+                    ->schema([
+                        Forms\Components\Select::make('user_id')
+                            ->label('Instructor')
+                            ->relationship('user', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->required(),
+                        Forms\Components\Placeholder::make('email')
+                            ->label('Email')
+                            ->content(fn ($get) =>
+                                \App\Domains\Users\Models\User::find($get('user_id'))?->email
+                                    ?? '-'
+                            ),
+                    ])
+                    ->columns(1),
             Section::make('Professional Details')->schema([
                 Forms\Components\Textarea::make('bio')
                     ->label('Professional Bio')

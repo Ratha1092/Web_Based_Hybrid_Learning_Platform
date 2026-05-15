@@ -22,7 +22,7 @@ class EnsureUserIsInstructor
             ], 401);
         }
 
-        if (!$user->hasRole('instructor')) {
+        if (!($user->role === 'instructor' || $user->hasRole('instructor'))) {
             return response()->json([
                 'success' => false,
                 'message' => 'Instructor access required.',
