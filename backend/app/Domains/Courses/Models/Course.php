@@ -10,22 +10,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-
 use Illuminate\Support\Str;
-
 use App\Domains\Users\Models\User;
-
 use App\Domains\Courses\Models\Section;
 use App\Domains\Courses\Models\Category;
 use App\Domains\Courses\Models\Tag;
 use App\Domains\Courses\Models\Lesson;
-
 use App\Domains\Learning\Models\Enrollment;
 use App\Domains\Learning\Models\Review;
 use App\Domains\Learning\Models\Wishlist;
-
 use App\Domains\Analytics\Models\CourseView;
-
 use App\Domains\Finance\Models\CourseSale;
 
 class Course extends Model
@@ -150,9 +144,11 @@ class Course extends Model
         );
     }
 
-    public function enrollments(): HasMany
+    public function enrollments()
     {
-        return $this->hasMany(Enrollment::class);
+        return $this->hasMany(
+            \App\Domains\Learning\Models\Enrollment::class
+        );
     }
 
     public function reviews(): HasMany

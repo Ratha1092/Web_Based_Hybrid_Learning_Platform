@@ -10,10 +10,6 @@ class LoginRequest extends FormRequest
     {
         return true;
     }
-
-    /**
-     * Normalize input BEFORE validation
-     */
     protected function prepareForValidation()
     {
         $this->merge([

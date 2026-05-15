@@ -5,8 +5,7 @@
 @source '../../../../resources/views/filament/**/*';
 
 /* ================================================================
-   FILAMENT PRIMARY COLOR — Amber/Gold (replaces default violet)
-   Values are R G B channel triplets (no commas)
+   FILAMENT PRIMARY COLOR — Amber/Gold
    ================================================================ */
 :root {
     --fi-color-primary-50:  255 251 235;
@@ -23,7 +22,7 @@
 }
 
 /* ================================================================
-   DESIGN TOKENS — LIGHT MODE (default)
+   DESIGN TOKENS — LIGHT MODE
    ================================================================ */
 :root {
     --lh-gold:         #b8860b;
@@ -55,7 +54,6 @@
 
 /* ================================================================
    DESIGN TOKENS — DARK MODE
-   Filament adds class="dark" to <html> when dark mode is active
    ================================================================ */
 .dark {
     --lh-gold:         #fbbf24;
@@ -145,6 +143,100 @@ body, .fi-body {
 }
 
 /* ================================================================
+   HAMBURGER ONLY — HIDE SIDEBAR ARROW, KEEP HAMBURGER
+   ================================================================ */
+
+/* SAFETY: never hide the topbar hamburger */
+.fi-topbar .fi-topbar-open-sidebar-btn,
+.fi-topbar-open-sidebar-btn {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+/* Hide ONLY sidebar-internal collapse/expand buttons */
+.fi-sidebar .fi-sidebar-collapse-btn,
+.fi-sidebar .fi-sidebar-collapse-button,
+.fi-sidebar button[aria-label*="collapse" i],
+.fi-sidebar button[aria-label*="expand" i],
+.fi-sidebar button[title*="Collapse" i],
+.fi-sidebar button[title*="Expand" i],
+.fi-sidebar-header button[class*="collapse"],
+.fi-sidebar-header button[class*="expand"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+}
+
+/* Hide any floating tooltip/portal from the hidden button */
+.fi-sidebar [data-floating-ui-portal],
+.fi-sidebar [role="tooltip"] {
+    display: none !important;
+}
+
+/* ================================================================
+   HAMBURGER BUTTON STYLING
+   ================================================================ */
+.fi-topbar-open-sidebar-btn {
+    align-items: center !important;
+    justify-content: center !important;
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    border-radius: 12px !important;
+    background: transparent !important;
+    border: 1px solid var(--lh-border) !important;
+    position: relative !important;
+    z-index: 50 !important;
+    cursor: pointer !important;
+    transition: background-color .2s ease, border-color .2s ease, transform .12s ease !important;
+}
+
+/* Keep real Filament icon, kill any fake pseudo-elements */
+.fi-topbar-open-sidebar-btn svg {
+    display: block !important;
+    width: 20px !important;
+    height: 20px !important;
+    color: var(--lh-text) !important;
+}
+.fi-topbar-open-sidebar-btn::before,
+.fi-topbar-open-sidebar-btn::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* Hover / Active */
+.fi-topbar-open-sidebar-btn:hover {
+    background: var(--lh-gold-soft) !important;
+    border-color: var(--lh-gold-border) !important;
+}
+.fi-topbar-open-sidebar-btn:active {
+    transform: scale(0.96) !important;
+}
+
+/* Light mode */
+html:not(.dark) .fi-topbar-open-sidebar-btn {
+    background: rgba(0,0,0,0.03) !important;
+    border-color: rgba(0,0,0,0.08) !important;
+}
+html:not(.dark) .fi-topbar-open-sidebar-btn:hover {
+    background: rgba(184,134,11,0.08) !important;
+    border-color: rgba(184,134,11,0.2) !important;
+}
+
+/* Mobile spacing */
+@media (max-width: 1023px) {
+    .fi-topbar-open-sidebar-btn {
+        margin-left: 0.25rem !important;
+    }
+}
+
+/* ================================================================
    SIDEBAR
    ================================================================ */
 .fi-sidebar {
@@ -209,7 +301,6 @@ body, .fi-body {
     position: relative !important;
 }
 
-/* Icon — color only, NO size override */
 .fi-nav-item a svg,
 .fi-nav-item button svg {
     color: var(--lh-text-muted) !important;
@@ -217,7 +308,6 @@ body, .fi-body {
     transition: color .18s !important;
 }
 
-/* Hover */
 .fi-nav-item a:hover,
 .fi-nav-item button:hover {
     background-color: var(--lh-gold-soft) !important;
@@ -228,7 +318,6 @@ body, .fi-body {
     color: var(--lh-gold) !important;
 }
 
-/* Active */
 .fi-nav-item-active a,
 .fi-nav-item.fi-active a,
 .fi-nav-item a[aria-current="page"] {
@@ -298,7 +387,6 @@ body, .fi-body {
     font-size: 13.5px !important;
 }
 
-/* Pagination */
 .fi-pagination {
     background-color: var(--lh-card) !important;
     border-top: 1px solid var(--lh-border-2) !important;
@@ -461,15 +549,12 @@ body, .fi-body {
 /* ================================================================
    LIGHT MODE ENHANCEMENTS
    ================================================================ */
-
-/* Better shadows for light mode depth */
 html:not(.dark) {
     --lh-shadow-sm: 0 2px 8px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
     --lh-shadow-md: 0 4px 16px rgba(0,0,0,0.1);
     --lh-shadow-lg: 0 10px 40px rgba(0,0,0,0.12);
 }
 
-/* Ensure cards have proper contrast in light mode */
 html:not(.dark) .fi-ta-ctn,
 html:not(.dark) .fi-ta-content,
 html:not(.dark) .fi-section,
@@ -482,7 +567,6 @@ html:not(.dark) .fi-notification {
     border-color: rgba(0,0,0,0.1) !important;
 }
 
-/* Better hover states for light mode */
 html:not(.dark) .fi-ta-row:hover {
     background-color: rgba(184,134,11,0.06) !important;
 }
@@ -496,7 +580,6 @@ html:not(.dark) .fi-dropdown-list-item button:hover {
     background-color: rgba(184,134,11,0.08) !important;
 }
 
-/* Light mode form improvements */
 html:not(.dark) .fi-input-wrp {
     background-color: #f3f4f6 !important;
     border-color: rgba(0,0,0,0.1) !important;
@@ -508,7 +591,6 @@ html:not(.dark) .fi-input-wrp:focus-within {
     box-shadow: 0 0 0 3px rgba(184,134,11,0.1) !important;
 }
 
-/* Improve light mode input text */
 html:not(.dark) .fi-input,
 html:not(.dark) .fi-input-wrp input,
 html:not(.dark) .fi-input-wrp textarea,
@@ -522,7 +604,6 @@ html:not(.dark) .fi-input-wrp textarea::placeholder {
     color: #94a3b8 !important;
 }
 
-/* Light mode button improvements */
 html:not(.dark) .fi-btn-color-primary,
 html:not(.dark) .fi-btn[data-color="primary"] {
     color: #1c1917 !important;
@@ -534,13 +615,11 @@ html:not(.dark) .fi-btn[data-color="primary"]:hover {
     box-shadow: 0 8px 16px rgba(184,134,11,0.25) !important;
 }
 
-/* Light mode header text */
 html:not(.dark) .fi-page-header h1,
 html:not(.dark) .fi-page-header .fi-page-heading {
     color: #0f172a !important;
 }
 
-/* Light mode label and text */
 html:not(.dark) .fi-fo-label,
 html:not(.dark) .fi-section-header-heading,
 html:not(.dark) .fi-modal-header-heading,
@@ -549,19 +628,16 @@ html:not(.dark) .fi-tabs-tab {
     color: #0f172a !important;
 }
 
-/* Light mode table headers */
 html:not(.dark) .fi-ta-header-cell {
     background-color: #f3f4f6 !important;
     color: #475569 !important;
     border-color: rgba(0,0,0,0.08) !important;
 }
 
-/* Light mode table cells */
 html:not(.dark) .fi-ta-cell {
     color: #334155 !important;
 }
 
-/* Light mode nav items */
 html:not(.dark) .fi-nav-item a,
 html:not(.dark) .fi-nav-item button {
     color: #475569 !important;
@@ -576,13 +652,11 @@ html:not(.dark) .fi-nav-group-label {
     color: #94a3b8 !important;
 }
 
-/* Light mode badges */
 html:not(.dark) .fi-badge {
     color: #0f172a !important;
     background-color: rgba(184,134,11,0.08) !important;
 }
 
-/* Light mode select and checkbox */
 html:not(.dark) input[type="checkbox"],
 html:not(.dark) input[type="radio"],
 html:not(.dark) select {

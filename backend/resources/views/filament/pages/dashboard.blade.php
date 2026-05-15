@@ -2,7 +2,8 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet"> -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 /* Reset & base */
@@ -36,6 +37,8 @@ html:not(.dark) .db-root {
     --green:     #34d399;
     --red:       #f87171;
     --blue:      #60a5fa;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* Light mode variables */
@@ -69,7 +72,7 @@ html:not(.dark) .db-root {
     border-bottom: 1px solid var(--border-w);
 }
 .db-header-title {
-    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-family: 'Manrope', system-ui, sans-serif;
     font-size: 36px;
     font-weight: 700;
     line-height: 1.1;
@@ -176,9 +179,9 @@ html:not(.dark) .db-stat-card:hover {
 .db-stat-icon.red   { background: rgba(248,113,113,0.1); color: var(--red); }
 
 .db-stat-val {
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: 38px;
-    font-weight: 700;
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 34px;
+    font-weight: 800;
     line-height: 1;
     color: rgba(255,255,255,0.92);
     letter-spacing: -0.02em;
@@ -314,7 +317,7 @@ html:not(.dark) .db-table-row:hover { background: rgba(0,0,0,0.03); }
 .db-avatar {
     width: 36px; height: 36px; border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
-    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-family: 'Manrope', system-ui, sans-serif;
     font-size: 16px; font-weight: 700; color: #030812;
     flex-shrink: 0;
     background: linear-gradient(135deg, var(--gold-lt), var(--gold-dk));
@@ -449,7 +452,7 @@ html:not(.dark) .db-row-name {
     font-size: 20px; flex-shrink: 0;
 }
 .db-mini-val {
-    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-family: 'Manrope', system-ui, sans-serif;
     font-size: 28px; font-weight: 700;
     color: rgba(255,255,255,0.9);
     line-height: 1;
@@ -765,13 +768,13 @@ html:not(.dark) .db-mini-val {
             <div style="padding:16px 22px 20px; border-top:1px solid rgba(255,255,255,0.05); margin-top:4px;">
                 <div style="display:flex; gap:24px;">
                     <div>
-                        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:26px;font-weight:700;color:rgba(255,255,255,0.9);">
+                        <div style="font-family:'Manrope',Georgia,serif;font-size:26px;font-weight:700;color:rgba(255,255,255,0.9);">
                             {{ $studentTrend->sum('count') }}
                         </div>
                         <div style="font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:rgba(255,255,255,0.35);margin-top:2px;">New over 6 months</div>
                     </div>
                     <div>
-                        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:26px;font-weight:700;color:rgba(255,255,255,0.9);">
+                        <div style="font-family:'Manrope',Georgia,serif;font-size:26px;font-weight:700;color:rgba(255,255,255,0.9);">
                             {{ $newStudentsThisMonth }}
                         </div>
                         <div style="font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:rgba(255,255,255,0.35);margin-top:2px;">This month</div>
@@ -809,6 +812,264 @@ html:not(.dark) .db-mini-val {
                 All instructors verified!
             </div>
             @endforelse
+        </div>
+
+    </div>
+
+    {{-- PAYMENT & FINANCE SECTION --}}
+    <div style="margin-top: 32px; padding-top: 32px; border-top: 1px solid var(--border-w);">
+        <div style="margin-bottom: 24px;">
+            <h2 style="font-family:'Manrope',Georgia,serif; font-size:24px; font-weight:700; color:rgba(255,255,255,0.92); margin-bottom:4px;">
+                💳 Payments & Finance
+            </h2>
+            <p style="font-size:12.5px; color:var(--text-dim);">Monitor revenue, orders, and instructor payouts.</p>
+        </div>
+
+        {{-- PAYMENT STATS --}}
+        <div class="db-stats" style="opacity: 0; animation: dbFadeUp .6s .35s cubic-bezier(.16,1,.3,1) forwards;">
+
+            {{-- Total Revenue --}}
+            <div class="db-stat-card">
+                <div class="db-stat-bg bg-gold"></div>
+                <div class="db-stat-icon gold">
+                    <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <div class="db-stat-val">${{ number_format($totalRevenue, 0) }}</div>
+                <div class="db-stat-label">Total Revenue</div>
+                <div class="db-stat-badge up">+${{ number_format($revenueThisMonth, 0) }} this month</div>
+            </div>
+
+            {{-- Total Orders --}}
+            <div class="db-stat-card">
+                <div class="db-stat-bg bg-blue"></div>
+                <div class="db-stat-icon blue">
+                    <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    </svg>
+                </div>
+                <div class="db-stat-val">{{ number_format($totalOrders) }}</div>
+                <div class="db-stat-label">Total Orders</div>
+                <div class="db-stat-badge neu">{{ $ordersThisMonth }} this month</div>
+            </div>
+
+            {{-- Completed Payments --}}
+            <div class="db-stat-card">
+                <div class="db-stat-bg bg-green"></div>
+                <div class="db-stat-icon green">
+                    <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <div class="db-stat-val">{{ number_format($completedPayments) }}</div>
+                <div class="db-stat-label">Completed Payments</div>
+                <div class="db-stat-badge up">Success rate: {{ $totalOrders > 0 ? round(($completedPayments / $totalOrders) * 100) : 0 }}%</div>
+            </div>
+
+            {{-- Pending Payments --}}
+            <div class="db-stat-card">
+                <div class="db-stat-bg bg-red"></div>
+                <div class="db-stat-icon red">
+                    <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <div class="db-stat-val">{{ number_format($pendingPayments) }}</div>
+                <div class="db-stat-label">Pending Payments</div>
+                <div class="db-stat-badge {{ $pendingPayments > 0 ? 'warn' : 'up' }}">
+                    {{ $pendingPayments > 0 ? 'Requires attention' : 'All processed' }}
+                </div>
+            </div>
+
+        </div>
+
+        {{-- FINANCE MINI STATS --}}
+        <div class="db-mini-row" style="margin-top: 24px; opacity: 0; animation: dbFadeUp .6s .4s cubic-bezier(.16,1,.3,1) forwards;">
+
+            <div class="db-mini-card">
+                <div class="db-mini-icon" style="background:rgba(52,211,153,0.1);color:#34d399;">
+                    <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="db-mini-val">${{ number_format($totalInstructorBalance, 0) }}</div>
+                    <div class="db-mini-label">Instructor Balance</div>
+                </div>
+            </div>
+
+            <div class="db-mini-card">
+                <div class="db-mini-icon" style="background:rgba(96,165,250,0.1);color:#60a5fa;">
+                    <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="db-mini-val">${{ number_format($totalPendingBalance, 0) }}</div>
+                    <div class="db-mini-label">Pending Payouts</div>
+                </div>
+            </div>
+
+            <div class="db-mini-card">
+                <div class="db-mini-icon" style="background:rgba(167,139,250,0.1);color:#a78bfa;">
+                    <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="db-mini-val">{{ number_format($failedPayments) }}</div>
+                    <div class="db-mini-label">Failed Payments</div>
+                </div>
+            </div>
+
+        </div>
+
+        {{-- RECENT ORDERS & PAYMENTS --}}
+        <div class="db-bottom" style="margin-top: 24px; opacity: 0; animation: dbFadeUp .6s .45s cubic-bezier(.16,1,.3,1) forwards;">
+
+            {{-- Recent Orders --}}
+            <div class="db-panel">
+                <div class="db-panel-head">
+                    <span class="db-panel-title">
+                        <svg style="display:inline;vertical-align:-3px;margin-right:7px;" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="rgba(212,160,23,0.7)" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                        Recent Orders
+                    </span>
+                    <a href="{{ route('filament.admin.resources.orders.index') }}" class="db-panel-action">View all →</a>
+                </div>
+
+                @forelse($recentOrders as $order)
+                @php
+                    $paymentStatus = $order->payment_status?->value ?? $order->payment_status;
+                @endphp
+                <div class="db-table-row">
+                    <div class="db-avatar">{{ strtoupper(substr($order->order_number, 0, 3)) }}</div>
+                    <div class="db-row-main">
+                        <div class="db-row-name">{{ $order->order_number }}</div>
+                        <div class="db-row-meta">
+                            {{ $order->user->name ?? 'Unknown' }} &nbsp;·&nbsp; ${{ number_format($order->final_amount, 2) }} &nbsp;·&nbsp; {{ $order->created_at->diffForHumans() }}
+                        </div>
+                    </div>
+                    <span class="db-badge {{ $paymentStatus === 'paid' ? 'published' : ($paymentStatus === 'pending' ? 'pending' : 'draft') }}">
+                        {{ str($paymentStatus)->headline() }}
+                    </span>
+                </div>
+                @empty
+                <div class="db-empty">No orders yet.</div>
+                @endforelse
+            </div>
+
+            {{-- Recent Payments --}}
+            <div class="db-panel" style="animation-delay:.36s;">
+                <div class="db-panel-head">
+                    <span class="db-panel-title">
+                        <svg style="display:inline;vertical-align:-3px;margin-right:7px;" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="rgba(212,160,23,0.7)" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h10M3 20h18M5 7l1-2h8l1 2M5 15l1-2h4l1 2M5 20l1-2h4l1 2"/>
+                        </svg>
+                        Recent Payments
+                    </span>
+                    <a href="{{ route('filament.admin.resources.payments.index') }}" class="db-panel-action">View all →</a>
+                </div>
+
+                @forelse($recentPayments as $payment)
+                @php
+                    $paymentGateway = $payment->payment_gateway?->value ?? $payment->payment_gateway;
+                    $paymentStatus = $payment->status?->value ?? $payment->status;
+                @endphp
+                <div class="db-table-row">
+                    <div class="db-avatar">{{ strtoupper(substr($paymentGateway, 0, 2)) }}</div>
+                    <div class="db-row-main">
+                        <div class="db-row-name">{{ $payment->order->order_number ?? 'N/A' }}</div>
+                        <div class="db-row-meta">
+                            {{ ucfirst($paymentGateway) }} &nbsp;·&nbsp; ${{ number_format($payment->amount, 2) }} &nbsp;·&nbsp; {{ $payment->created_at->diffForHumans() }}
+                        </div>
+                    </div>
+                    <span class="db-badge {{ in_array($paymentStatus, ['paid', 'completed'], true) ? 'published' : ($paymentStatus === 'pending' ? 'pending' : 'draft') }}">
+                        {{ str($paymentStatus)->headline() }}
+                    </span>
+                </div>
+                @empty
+                <div class="db-empty">No payments yet.</div>
+                @endforelse
+            </div>
+
+        </div>
+
+        {{-- REVENUE TREND --}}
+        <div class="db-verify-panel" style="margin-top: 24px; opacity: 0; animation: dbFadeUp .6s .52s cubic-bezier(.16,1,.3,1) forwards;">
+            <div class="db-panel-head">
+                <span class="db-panel-title">
+                    <svg style="display:inline;vertical-align:-3px;margin-right:7px;" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="rgba(212,160,23,0.7)" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                    </svg>
+                    Revenue & Orders — Last 6 Months
+                </span>
+            </div>
+
+            @php
+                $maxRevenue = collect($revenueTrend)->max('revenue') ?: 1;
+                $maxOrders = collect($revenueTrend)->max('orders') ?: 1;
+            @endphp
+
+            <div style="padding: 20px 22px 8px;">
+                <div style="display:flex; align-items:flex-end; gap:10px; height:100px;">
+                    @foreach($revenueTrend as $point)
+                    @php
+                        $h1 = $point['revenue'] > 0 ? max(6, round(($point['revenue'] / max($maxRevenue, 1)) * 85)) : 0;
+                        $h2 = $point['orders'] > 0 ? max(2, round(($point['orders'] / max($maxOrders, 1)) * 40)) : 0;
+                    @endphp
+                    <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; position:relative;">
+                        <div style="display:flex; gap:2px; width:100%; align-items:flex-end; height:85px;">
+                            <div style="
+                                flex:1;
+                                height:{{ $h1 }}px;
+                                border-radius:3px 3px 0 0;
+                                background: rgba(212,160,23,0.25);
+                                position:relative;
+                            "></div>
+                            <div style="
+                                flex:1;
+                                height:{{ $h2 }}px;
+                                border-radius:3px 3px 0 0;
+                                background: rgba(96,165,250,0.25);
+                            "></div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                <div style="display:flex; gap:10px; margin-top:8px;">
+                    @foreach($revenueTrend as $point)
+                    <div style="flex:1;text-align:center;font-size:10px;color:rgba(255,255,255,0.28);letter-spacing:.04em;">
+                        {{ $point['month'] }}
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <div style="padding:16px 22px 20px; border-top:1px solid rgba(255,255,255,0.05); margin-top:4px; display:flex; gap:24px;">
+                <div>
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                        <div style="width:12px; height:12px; border-radius:3px; background:rgba(212,160,23,0.4);"></div>
+                        <span style="font-size:11px; color:rgba(255,255,255,0.65);">Revenue</span>
+                    </div>
+                    <div style="font-family:'Manrope',Georgia,serif;font-size:24px;font-weight:700;color:rgba(255,255,255,0.9);">
+                        ${{ number_format(collect($revenueTrend)->sum('revenue'), 0) }}
+                    </div>
+                    <div style="font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:rgba(255,255,255,0.35);margin-top:2px;">6 months</div>
+                </div>
+                <div>
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                        <div style="width:12px; height:12px; border-radius:3px; background:rgba(96,165,250,0.4);"></div>
+                        <span style="font-size:11px; color:rgba(255,255,255,0.65);">Orders</span>
+                    </div>
+                    <div style="font-family:'Manrope',Georgia,serif;font-size:24px;font-weight:700;color:rgba(255,255,255,0.9);">
+                        {{ collect($revenueTrend)->sum('orders') }}
+                    </div>
+                    <div style="font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:rgba(255,255,255,0.35);margin-top:2px;">6 months</div>
+                </div>
+            </div>
         </div>
 
     </div>

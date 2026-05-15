@@ -3,15 +3,15 @@
 namespace App\Domains\Courses\Resources;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Domains\Courses\Models\Lesson;
 
 class LessonResource extends Model
 {
     protected $fillable = [
         'lesson_id',
         'title',
-        'resource_type',
+        'type',
         'file_path',
-        'external_url'
     ];
 
     public function lesson()
