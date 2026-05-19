@@ -31,9 +31,15 @@ class AppServiceProvider extends ServiceProvider
             LessonPolicy::class
         );
         // Rate Limiters
+        // Register APIs
+        RateLimiter::for('register', function (Request $request) {
+            return Limit::perMinute(3)->by(
+                $request->ip()
+            );
+        });
         // Login APIs
         RateLimiter::for('login', function (Request $request) {
-            return Limit::perMinute(5)->by(
+            return Limit::perMinute(3)->by(
                 $request->user()?->id
                     ?: $request->ip()
             );
@@ -41,7 +47,7 @@ class AppServiceProvider extends ServiceProvider
 
         // Authentication APIs
         RateLimiter::for('auth', function (Request $request) {
-            return Limit::perMinute(30)->by(
+            return Limit::perMinute(10)->by(
                 $request->user()?->id
                     ?: $request->ip()
             );
