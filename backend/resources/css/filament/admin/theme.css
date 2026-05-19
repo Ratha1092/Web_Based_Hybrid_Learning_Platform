@@ -90,6 +90,14 @@ body, .fi-body {
 }
 
 /* ================================================================
+   HIDE DEFAULT DASHBOARD PAGE HEADER
+   (Period tabs / Gateway / Status / Courses bar rendered by Filament)
+   ================================================================ */
+.fi-page > .fi-page-header {
+    display: none !important;
+}
+
+/* ================================================================
    TOP BAR
    ================================================================ */
 .fi-topbar {
@@ -219,7 +227,6 @@ body, .fi-body {
     transition: background-color .2s ease, border-color .2s ease, transform .12s ease !important;
 }
 
-/* Keep real Filament icon, kill any fake pseudo-elements */
 .fi-topbar-open-sidebar-btn svg {
     display: block !important;
     width: 20px !important;
@@ -232,7 +239,6 @@ body, .fi-body {
     display: none !important;
 }
 
-/* Hover / Active */
 .fi-topbar-open-sidebar-btn:hover {
     background: var(--lh-gold-soft) !important;
     border-color: var(--lh-gold-border) !important;
@@ -241,7 +247,6 @@ body, .fi-body {
     transform: scale(0.96) !important;
 }
 
-/* Light mode */
 html:not(.dark) .fi-topbar-open-sidebar-btn {
     background: rgba(0,0,0,0.03) !important;
     border-color: rgba(0,0,0,0.08) !important;
@@ -251,7 +256,6 @@ html:not(.dark) .fi-topbar-open-sidebar-btn:hover {
     border-color: rgba(184,134,11,0.2) !important;
 }
 
-/* Mobile spacing */
 @media (max-width: 1023px) {
     .fi-topbar-open-sidebar-btn {
         margin-left: 0.25rem !important;
