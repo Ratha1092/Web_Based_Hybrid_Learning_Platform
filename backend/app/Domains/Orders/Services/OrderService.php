@@ -2,16 +2,23 @@
 
 namespace App\Domains\Orders\Services;
 
+use App\Domains\Orders\Enums\OrderPaymentStatus;
+use App\Domains\Orders\Enums\OrderStatus;
 use App\Domains\Orders\Models\Order;
 use App\Domains\Orders\Models\OrderItem;
 use App\Domains\Learning\Models\Enrollment;
-use App\Domains\Payments\Models\Payment;
+use App\Domains\Payments\Services\BakongKhqrService;
 use App\Domains\Courses\Models\Course;
 use App\Domains\Users\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class OrderService
 {
+    public function __construct(
+        private readonly BakongKhqrService $bakongKhqrService
+    ) {
+    }
+
     public function createOrder(User $user, int $courseId): Order
     {
         return DB::transaction(function () use ($user, $courseId) {
@@ -38,31 +45,31 @@ class OrderService
                 'total_amount' => $course->price,
                 'discount_amount' => 0,
                 'final_amount' => $course->price,
-                'currency' => 'USD',
-                'status' => 'pending',
-                'payment_status' => 'pending',
+                'currency' => config('payments.bakong.currency', 'USD'),
+                'status' => OrderStatus::Pending,
+                'payment_status' => OrderPaymentStatus::Pending,
                 'customer_name' => $user->name ?? 'Guest',
                 'customer_email' => $user->email ?? null,
             ]);
             $commissionPercentage = 20;
+            $platformAmount = ((float) $course->price * $commissionPercentage) / 100;
+            $instructorAmount = (float) $course->price - $platformAmount;
+
             // Order Item
             OrderItem::create([
                 'order_id' => $order->id,
                 'course_id' => $course->id,
                 'price' => $course->price,
+                'discount_amount' => 0,
+                'final_amount' => $course->price,
                 'instructor_id' => $course->instructor_id,
                 'course_title' => $course->title,
                 'commission_percentage' => $commissionPercentage,
+                'instructor_amount' => $instructorAmount,
+                'platform_amount' => $platformAmount,
             ]);
 
-            // Payment record
-            Payment::create([
-                'order_id' => $order->id,
-                'amount' => $course->price,
-                'currency' => 'USD',
-                'status' => 'pending',
-                'payment_gateway' => 'khqr'
-            ]);
+            $this->bakongKhqrService->createPaymentForOrder($order);
 
             return $order;
         });

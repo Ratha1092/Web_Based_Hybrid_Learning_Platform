@@ -52,19 +52,14 @@ class User extends Authenticatable implements FilamentUser
         'email',
         'email_verified_at',
         'password',
-
         'avatar',
         'phone',
-
         'role',
         'instructor_status',
         'status',
-
         'last_login_at',
-
         'two_factor_enabled',
         'two_factor_secret',
-
         'oauth_provider',
         'oauth_id',
         'oauth_avatar',
@@ -91,14 +86,16 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Course::class, 'instructor_id');
     }
 
-    public function enrollments(): HasMany
+   public function enrollments()
     {
-        return $this->hasMany(Enrollment::class);
+        return $this->hasMany(
+            \App\Domains\Learning\Models\Enrollment::class
+        );
     }
 
-    public function lessonProgress(): HasMany
+    public function lessonProgress()
     {
-        return $this->hasMany(LessonProgress::class);
+        return $this->hasMany(\App\Domains\Learning\Models\LessonProgress::class);
     }
 
     public function reviews(): HasMany
@@ -178,34 +175,34 @@ class User extends Authenticatable implements FilamentUser
 
     public function isAdmin(): bool
     {
-        return $this->hasRole('admin');
+        return $this->role === 'admin' || $this->hasRole('admin');
     }
 
     public function isInstructor(): bool
     {
-        return $this->hasRole('instructor');
+        return $this->role === 'instructor' || $this->hasRole('instructor');
     }
 
     public function isStudent(): bool
     {
-        return $this->hasRole('student');
+        return $this->role === 'student' || $this->hasRole('student');
     }
 
     public function isVerifiedInstructor(): bool
     {
-        return $this->hasRole('instructor')
+        return ($this->role === 'instructor' || $this->hasRole('instructor'))
             && $this->instructor_status === self::INSTRUCTOR_VERIFIED;
     }
 
     public function hasVerificationPending(): bool
     {
-        return $this->hasRole('instructor')
+        return ($this->role === 'instructor' || $this->hasRole('instructor'))
             && $this->instructor_status === self::INSTRUCTOR_PENDING;
     }
 
     public function hasVerificationRejected(): bool
     {
-        return $this->hasRole('instructor')
+        return ($this->role === 'instructor' || $this->hasRole('instructor'))
             && $this->instructor_status === self::INSTRUCTOR_REJECTED;
     }
 
@@ -232,5 +229,11 @@ class User extends Authenticatable implements FilamentUser
     {
         return $panel->getId() === 'admin'
             && $this->hasRole('admin');
+    }
+    public function hasEnrolledCourse(int $courseId): bool {
+            return $this->enrollments()
+                ->where('course_id', $courseId)
+                ->where('status', 'active')
+                ->exists();
     }
 }

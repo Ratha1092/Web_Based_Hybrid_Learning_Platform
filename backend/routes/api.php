@@ -5,10 +5,8 @@ use App\Domains\Auth\Resources\UserResource;
 use App\Support\ApiResponse;
 
 /*
-|--------------------------------------------------------------------------
-| API Routes (v1)
-|--------------------------------------------------------------------------
-| Domain-based routing system with versioning
+API Routes (v1)
+Domain-based routing system with versioning
 */
 
 Route::prefix('v1')->group(function () {

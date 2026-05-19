@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Domains\Payments\Controllers\PaymentController;
 
-// Placeholder for Payment routes - add controllers as needed
-Route::middleware('auth:sanctum')->prefix('payments')->group(function () {
-    // Route::post('/', [PaymentController::class, 'store']);
-    // Route::get('/{id}', [PaymentController::class, 'show']);
+Route::middleware(['auth:sanctum','throttle:payments',])->prefix('payments')->group(function () {
+        Route::get('/{payment}/status',[PaymentController::class, 'status']);
+        Route::post('/verify',[PaymentController::class, 'verify']);
 });

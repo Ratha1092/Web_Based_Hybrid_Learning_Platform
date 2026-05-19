@@ -3,6 +3,7 @@
 namespace App\Domains\Auth\Controllers;
 
 use Illuminate\Routing\Controller;
+use Illuminate\Validation\ValidationException;
 use App\Domains\Auth\Services\AuthService;
 use App\Domains\Auth\Requests\LoginRequest;
 use App\Domains\Auth\Requests\RegisterRequest;
@@ -21,7 +22,11 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request)
     {
-        $data = $this->authService->login($request->validated());
+        try {
+            $data = $this->authService->login($request->validated());
+        } catch (ValidationException $exception) {
+            return ApiResponse::error('Invalid credentials', 400, $exception->errors());
+        }
 
         return ApiResponse::success($data, 'Login successful');
         

@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\Route;
     
 // });
 
-    Route::get('/', function () {
-        return redirect('/admin/login');
-    });
+Route::get('/web', function () {
+    return 'Web fallback active';
+});
+
+Route::get('/', function () {
+    return redirect('/admin/login');
+});

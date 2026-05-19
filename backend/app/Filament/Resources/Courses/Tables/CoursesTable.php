@@ -18,9 +18,7 @@ class CoursesTable
                 Tables\Columns\ImageColumn::make('thumbnail')
                     ->label('Thumbnail')
                     ->square()
-                    ->defaultImageUrl(
-                        'https://placehold.co/100x100/png'
-                    ),
+                    ->defaultImageUrl('https://placehold.co/100x100/png'),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable()
                     ->sortable()
