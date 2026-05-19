@@ -57,6 +57,8 @@ class OrdersTable
                     ->label('Created')
                     ->dateTime('M d, Y H:i')
                     ->sortable(),
+                Tables\Columns\textColumn::make('action')
+                    ->label('Action')
             ])
 
             ->filters([
