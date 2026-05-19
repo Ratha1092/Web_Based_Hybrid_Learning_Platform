@@ -4,6 +4,7 @@ namespace App\Domains\Payments\Controllers;
 
 use App\Domains\Payments\Models\Payment;
 use App\Domains\Payments\Services\BakongKhqrService;
+use App\Domains\Payments\Services\QrCodeService;
 use App\Http\Controllers\Controller;
 use App\Support\ApiResponse;
 use Illuminate\Http\Client\RequestException;
@@ -13,7 +14,8 @@ use RuntimeException;
 class PaymentController extends Controller
 {
     public function __construct(
-        private readonly BakongKhqrService $bakongKhqrService
+        private readonly BakongKhqrService $bakongKhqrService,
+        private readonly QrCodeService $qrCodeService
     ) {}
 
     public function status(Request $request, Payment $payment)
@@ -58,6 +60,15 @@ class PaymentController extends Controller
     {
         $payment->loadMissing('order');
 
+        $qrCodeImage = null;
+        if ($payment->khqr_payload && $payment->isPending()) {
+            try {
+                $qrCodeImage = $this->qrCodeService->generateQrCodeFromPayload($payment->khqr_payload);
+            } catch (\Exception) {
+                // QR generation failed, continue without it
+            }
+        }
+
         return [
             'id' => $payment->id,
             'order_id' => $payment->order_id,
@@ -68,6 +79,7 @@ class PaymentController extends Controller
             'amount' => $payment->amount,
             'currency' => $payment->currency,
             'khqr_payload' => $payment->khqr_payload,
+            'qr_code_image' => $qrCodeImage,
             'external_reference' => $payment->external_reference,
             'transaction_id' => $payment->transaction_id,
             'paid_at' => $payment->paid_at,
