@@ -1,5 +1,5 @@
-import { BookOpen, CheckCircle2, Play, Users } from "lucide-react";
-
+import { BookOpen, CheckCircle2,  Play, Users } from "lucide-react";
+import { Link } from "react-router-dom";
 function Hero() {
   return (
     <section className="hero">
@@ -20,7 +20,9 @@ function Hero() {
             interactive way.
           </p>
           <div className="hero-actions">
-            <button className="btn btn-white">Join for free</button>
+           <Link to="/Pageregister" className="btn btn-white">
+  Join for free
+</Link>
             <button className="btn btn-ghost-white">
               <span className="play-icon">
                 <Play size={14} fill="white" />

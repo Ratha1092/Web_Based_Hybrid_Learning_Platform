@@ -29,6 +29,7 @@ class AuthController extends Controller
         }
 
         return ApiResponse::success($data, 'Login successful');
+        
     }
 
     public function logout()

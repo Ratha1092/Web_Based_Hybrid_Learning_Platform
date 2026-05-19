@@ -1,15 +1,22 @@
-import { Routes, Route , Link } from "react-router-dom";
+
+import { Routes, Route } from "react-router-dom";
 
 import Navbar from "./component/nabar";
 import Hero from "./component/hero";
 import Categories from "./component/categories";
 import Footer from "./component/footer";
-import Login from "./component/login";
+
+import Courses from "./pages/courses";
+import HowItWorks from "./pages/how_it_work";
+import PageCategories from "./pages/pagecategoires";
+
+import PageRegister from "./pages/PageRegister";
+import Pagelogin from "./pages/Pagelogin";
+import Profile from "./pages/profile";
 
 function MainPage() {
   return (
     <>
-      <Navbar />
       <Hero />
       <Categories />
       <Footer />
@@ -19,11 +26,46 @@ function MainPage() {
 
 function Home() {
   return (
-    <Routes>
-      <Route path="/" element={<MainPage />} />
-      <Route path="/login" element={<Login />} />
-    </Routes>
+    <>
+      {/* IMPORTANT */}
+      <Navbar />
+
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+
+        <Route
+          path="/courses"
+          element={<Courses />}
+        />
+
+        <Route
+          path="/categories"
+          element={<PageCategories />}
+        />
+
+        <Route
+          path="/how_it_works"
+          element={<HowItWorks />}
+        />
+
+        <Route
+          path="/PageRegister"
+          element={<PageRegister />}
+        />
+
+        <Route
+          path="/PageLogin"
+          element={<Pagelogin />}
+        />
+
+        <Route
+          path="/profile"
+          element={<Profile />}
+        />
+      </Routes>
+    </>
   );
 }
 
 export default Home;
+

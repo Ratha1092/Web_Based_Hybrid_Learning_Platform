@@ -1,5 +1,6 @@
 
 import {Award, Bell, BookOpen, Camera, CheckCircle2, ChevronRight, Code2, DollarSign, FlaskConical, MessageSquare, PenTool, Play, Send, Search, Share2, Star, TrendingUp, Users, Video,Wifi, CirclePlay,} from 'lucide-react'
+
 const categories = [
   { icon: PenTool, label: 'Art & Design', count: 38 },
   { icon: Code2, label: 'Development', count: 38 },
@@ -14,6 +15,8 @@ const categories = [
 ]
 function Categories() {
   return (
+   <>
+   
     <section className="section categories-section">
       <div className="container">
         <div className="section-header">
@@ -42,6 +45,7 @@ function Categories() {
         </div>
       </div>
     </section>
-  )
+   </>
+  );
 }
 export default Categories;
