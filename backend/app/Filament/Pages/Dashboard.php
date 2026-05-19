@@ -21,6 +21,21 @@ class Dashboard extends BaseDashboard
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-home';
     protected static ?string $navigationLabel = 'Dashboard';
     protected static ?int $navigationSort = -2;
+
+    public function getHeading(): string|\Illuminate\Contracts\Support\Htmlable
+    {
+        return '';
+    }
+    protected function getHeaderWidgets(): array
+    {
+        return [];
+    }
+
+    protected function getFooterWidgets(): array
+    {
+        return [];
+    }
+
     protected function getDateRange(): array
     {
         $preset   = request('preset', 'this_month');
@@ -66,6 +81,7 @@ class Dashboard extends BaseDashboard
         $courseStatus    = request('course_status', 'all');
 
         $paidStatuses = [PaymentStatus::Paid->value, PaymentStatus::Completed->value];
+
         $payBase = function () use ($from, $to, $gatewayFilter, $statusFilter) {
             $q = Payment::query();
             $this->applyDateRange($q, 'created_at', $from, $to);
@@ -86,6 +102,8 @@ class Dashboard extends BaseDashboard
             }
             return $q;
         };
+
+        // ── People ──────────────────────────────────────────────────────
         $studentQ = User::where('role', 'student');
         $this->applyDateRange($studentQ, 'created_at', $from, $to);
         $totalStudents = $studentQ->count();
@@ -94,16 +112,19 @@ class Dashboard extends BaseDashboard
             ->whereMonth('created_at', now()->month)
             ->whereYear('created_at', now()->year)
             ->count();
+
         $totalInstructors     = User::where('role', 'instructor')->count();
         $pendingVerifications = User::where('role', 'instructor')->where('is_verified', false)->count();
 
         $pendingInstructors = User::where('role', 'instructor')
             ->where('is_verified', false)
             ->latest()->take(5)->get();
+
+        // ── Courses ──────────────────────────────────────────────────────
         $courseQ = Course::query();
         $this->applyDateRange($courseQ, 'created_at', $from, $to);
         if ($courseStatus !== 'all') {
-            if ($courseStatus === 'published')  $courseQ->where('is_published', true);
+            if ($courseStatus === 'published')   $courseQ->where('is_published', true);
             if ($courseStatus === 'unpublished') $courseQ->where('is_published', false);
         }
         $totalCourses = $courseQ->count();
@@ -117,23 +138,28 @@ class Dashboard extends BaseDashboard
 
         $recentCourses = Course::with(['instructor', 'category'])
             ->when($courseStatus !== 'all', function ($q) use ($courseStatus) {
-                if ($courseStatus === 'published')  $q->where('is_published', true);
+                if ($courseStatus === 'published')   $q->where('is_published', true);
                 if ($courseStatus === 'unpublished') $q->where('is_published', false);
             })
             ->latest()->take(6)->get();
 
         $recentUsers = User::latest()->take(6)->get();
-        $orderQ = Order::query();
 
+        // ── Orders ───────────────────────────────────────────────────────
+        $orderQ = Order::query();
         $this->applyDateRange($orderQ, 'created_at', $from, $to);
         $totalOrders = $orderQ->count();
 
         $ordersThisMonth = Order::whereMonth('created_at', now()->month)
             ->whereYear('created_at', now()->year)
             ->count();
-        $totalRevenue      = $paidBase()->sum('amount');
-        $revenueThisMonth  = $paidBase()->whereMonth('paid_at', now()->month)
-            ->whereYear('paid_at', now()->year)->sum('amount');
+
+        // ── Finance ──────────────────────────────────────────────────────
+        $totalRevenue     = $paidBase()->sum('amount');
+        $revenueThisMonth = $paidBase()
+            ->whereMonth('paid_at', now()->month)
+            ->whereYear('paid_at', now()->year)
+            ->sum('amount');
 
         $completedPayments = $paidBase()->count();
         $pendingPayments   = $payBase()->where('status', PaymentStatus::Pending->value)->count();
@@ -146,9 +172,13 @@ class Dashboard extends BaseDashboard
             ->when($gatewayFilter !== 'all', fn($q) => $q->where('payment_gateway', $gatewayFilter))
             ->when($statusFilter !== 'all',  fn($q) => $q->where('status', $statusFilter))
             ->latest()->take(6)->get();
+
         $totalInstructorBalance = InstructorWallet::sum('balance');
         $totalPendingBalance    = InstructorWallet::sum('pending_balance');
+
+        // ── Trends ───────────────────────────────────────────────────────
         $trendBase = $to ?? now();
+
         $studentTrend = collect(range(5, 0))->map(function ($mo) use ($trendBase) {
             $date = (clone $trendBase)->subMonths($mo);
             return [
@@ -174,6 +204,8 @@ class Dashboard extends BaseDashboard
                     ->count(),
             ];
         });
+
+        // ── Breakdowns ───────────────────────────────────────────────────
         $paymentStatusBreakdown = [
             'completed' => $paidBase()->count(),
             'pending'   => $payBase()->where('status', PaymentStatus::Pending->value)->count(),
@@ -182,46 +214,45 @@ class Dashboard extends BaseDashboard
         ];
 
         $paymentGatewayBreakdown = [
-
             'bakong' => Payment::whereIn('status', $paidStatuses)
                 ->where('payment_gateway', PaymentGateway::Bakong->value)
-                ->when($from, fn ($q) => $q->where('paid_at', '>=', $from))
-                ->when($to, fn ($q) => $q->where('paid_at', '<=', $to))
+                ->when($from, fn($q) => $q->where('paid_at', '>=', $from))
+                ->when($to,   fn($q) => $q->where('paid_at', '<=', $to))
                 ->sum('amount'),
 
             'khqr' => Payment::whereIn('status', $paidStatuses)
                 ->where('payment_gateway', PaymentGateway::Khqr->value)
-                ->when($from, fn ($q) => $q->where('paid_at', '>=', $from))
-                ->when($to, fn ($q) => $q->where('paid_at', '<=', $to))
+                ->when($from, fn($q) => $q->where('paid_at', '>=', $from))
+                ->when($to,   fn($q) => $q->where('paid_at', '<=', $to))
                 ->sum('amount'),
 
             'aba' => Payment::whereIn('status', $paidStatuses)
                 ->where('payment_gateway', PaymentGateway::Aba->value)
-                ->when($from, fn ($q) => $q->where('paid_at', '>=', $from))
-                ->when($to, fn ($q) => $q->where('paid_at', '<=', $to))
+                ->when($from, fn($q) => $q->where('paid_at', '>=', $from))
+                ->when($to,   fn($q) => $q->where('paid_at', '<=', $to))
                 ->sum('amount'),
 
             'stripe' => Payment::whereIn('status', $paidStatuses)
                 ->where('payment_gateway', PaymentGateway::Stripe->value)
-                ->when($from, fn ($q) => $q->where('paid_at', '>=', $from))
-                ->when($to, fn ($q) => $q->where('paid_at', '<=', $to))
+                ->when($from, fn($q) => $q->where('paid_at', '>=', $from))
+                ->when($to,   fn($q) => $q->where('paid_at', '<=', $to))
                 ->sum('amount'),
 
             'paypal' => Payment::whereIn('status', $paidStatuses)
                 ->where('payment_gateway', PaymentGateway::Paypal->value)
-                ->when($from, fn ($q) => $q->where('paid_at', '>=', $from))
-                ->when($to, fn ($q) => $q->where('paid_at', '<=', $to))
+                ->when($from, fn($q) => $q->where('paid_at', '>=', $from))
+                ->when($to,   fn($q) => $q->where('paid_at', '<=', $to))
                 ->sum('amount'),
         ];
 
         return [
-            // Meta (pass filters back to view)
-            'activePreset'      => $preset,
-            'activeDateFrom'    => $from ? $from->format('Y-m-d') : null,
-            'activeDateTo'      => $to   ? $to->format('Y-m-d')   : null,
-            'activeGateway'     => $gatewayFilter,
-            'activeStatus'      => $statusFilter,
-            'activeCourseStatus'=> $courseStatus,
+            // Meta — pass active filters back to the view
+            'activePreset'       => $preset,
+            'activeDateFrom'     => $from ? $from->format('Y-m-d') : null,
+            'activeDateTo'       => $to   ? $to->format('Y-m-d')   : null,
+            'activeGateway'      => $gatewayFilter,
+            'activeStatus'       => $statusFilter,
+            'activeCourseStatus' => $courseStatus,
 
             // People
             'totalStudents'           => $totalStudents,
@@ -233,11 +264,11 @@ class Dashboard extends BaseDashboard
             'studentTrend'            => $studentTrend,
 
             // Courses
-            'totalCourses'            => $totalCourses,
-            'totalSections'           => $totalSections,
-            'totalLessons'            => $totalLessons,
-            'newCoursesThisMonth'     => $newCoursesThisMonth,
-            'recentCourses'           => $recentCourses,
+            'totalCourses'        => $totalCourses,
+            'totalSections'       => $totalSections,
+            'totalLessons'        => $totalLessons,
+            'newCoursesThisMonth' => $newCoursesThisMonth,
+            'recentCourses'       => $recentCourses,
 
             // Finance
             'totalOrders'             => $totalOrders,

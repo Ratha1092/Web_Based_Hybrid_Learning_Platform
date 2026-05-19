@@ -48,11 +48,8 @@
     $userName = auth()->user()->name ?? 'Admin';
 @endphp
 
-{{-- 
-     SIDEBAR OVERRIDES  (Filament 3 classes)
- --}}
+{{-- SIDEBAR OVERRIDES (Filament 3 classes) --}}
 <style>
-/* ── Base sidebar shell ── */
 .fi-sidebar { background: #0d1526 !important; border-right: 1px solid rgba(255,255,255,.07) !important; }
 .fi-sidebar-inner { background: #0d1526 !important; }
 .fi-sidebar-header {
@@ -60,57 +57,32 @@
     border-bottom: 1px solid rgba(255,255,255,.07) !important;
     padding: 14px 16px !important;
 }
-/* Brand name */
 .fi-logo { color: #ffffff !important; font-weight: 700 !important; }
-
-/* ── Nav groups & items ── */
 .fi-sidebar-group-label {
-    font-size: 9.5px !important;
-    font-weight: 700 !important;
-    letter-spacing: .13em !important;
-    text-transform: uppercase !important;
-    color: #2e4a68 !important;
-    padding: 8px 14px 4px !important;
+    font-size: 9.5px !important; font-weight: 700 !important; letter-spacing: .13em !important;
+    text-transform: uppercase !important; color: #2e4a68 !important; padding: 8px 14px 4px !important;
 }
 .fi-sidebar-item-button {
-    color: #5a7a9a !important;
-    border-radius: 8px !important;
-    margin: 1px 6px !important;
-    padding: 8px 10px !important;
-    font-size: 13px !important;
-    font-weight: 500 !important;
+    color: #5a7a9a !important; border-radius: 8px !important; margin: 1px 6px !important;
+    padding: 8px 10px !important; font-size: 13px !important; font-weight: 500 !important;
     transition: background .18s, color .18s !important;
 }
-.fi-sidebar-item-button:hover {
-    background: rgba(47,140,255,.1) !important;
-    color: #a8c8e8 !important;
-}
-/* Active item */
+.fi-sidebar-item-button:hover { background: rgba(47,140,255,.1) !important; color: #a8c8e8 !important; }
 .fi-sidebar-item-button.fi-active,
 .fi-sidebar-item-button[aria-current="page"],
 .fi-sidebar-item-button[data-active="true"] {
-    background: rgba(47,140,255,.16) !important;
-    color: #4fa8ff !important;
-    font-weight: 600 !important;
+    background: rgba(47,140,255,.16) !important; color: #4fa8ff !important; font-weight: 600 !important;
 }
 .fi-sidebar-item-button svg { color: inherit !important; opacity: .9; }
-
-/* Sub-items (collapsed group children) */
-.fi-sidebar-group-items .fi-sidebar-item-button {
-    color: #4a6a8a !important;
-    padding-left: 20px !important;
-    font-size: 12.5px !important;
-}
+.fi-sidebar-group-items .fi-sidebar-item-button { color: #4a6a8a !important; padding-left: 20px !important; font-size: 12.5px !important; }
 .fi-sidebar-group-items .fi-sidebar-item-button:hover { color: #a8c8e8 !important; }
-
-/* ── Topbar ── */
 .fi-topbar { background: #0d1526 !important; border-bottom: 1px solid rgba(255,255,255,.07) !important; }
 .fi-topbar-nav { background: #0d1526 !important; }
-
-/* ── Main content area ── */
 .fi-main, .fi-simple-main, .fi-body, .fi-main-ctn { background: #111d32 !important; }
 
-/* ── Light mode ── */
+/* Hide the old Filament page header / filter bar */
+.fi-page > .fi-page-header { display: none !important; }
+
 html:not(.dark) .fi-sidebar,
 html:not(.dark) .fi-sidebar-inner,
 html:not(.dark) .fi-sidebar-header { background: #1a2540 !important; }
@@ -124,9 +96,7 @@ html:not(.dark) .fi-main,
 html:not(.dark) .fi-main-ctn { background: #edf1f8 !important; }
 </style>
 
-{{-- 
-     DASHBOARD CSS
- --}}
+{{-- DASHBOARD CSS --}}
 <style>
 .rb,
 .rb *, .rb *::before, .rb *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -175,20 +145,13 @@ html:not(.dark) .rb {
 
 /* ────────── GREETING HEADER ────────── */
 .rb-greet {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 12px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid var(--bd);
+    display: flex; align-items: flex-end; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px;
+    padding-bottom: 20px; border-bottom: 1px solid var(--bd);
 }
 .rb-greet-text h1 {
-    font-size: clamp(22px,2.8vw,32px);
-    font-weight: 780;
-    letter-spacing: -.015em;
-    color: var(--t1);
-    line-height: 1.1;
+    font-size: clamp(22px,2.8vw,32px); font-weight: 780;
+    letter-spacing: -.015em; color: var(--t1); line-height: 1.1;
 }
 .rb-greet-text h1 em {
     font-style: normal;
@@ -210,14 +173,86 @@ html:not(.dark) .rb {
     animation: blink 2.2s ease-in-out infinite; flex-shrink: 0;
 }
 
-/* ────────── FINANCE SUB-HEADER ────────── */
+/* ────────── SUBHEAD + INLINE FILTER ROW ────────── */
 .rb-subhead {
-    display: flex; align-items: flex-end; justify-content: space-between;
-    flex-wrap: wrap; gap: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
 }
-.rb-kicker { font-size:10.5px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:var(--t2); }
-.rb-title  { font-size:20px; font-weight:750; letter-spacing:-.01em; color:var(--t1); margin-top:3px; }
-.rb-crumb  { display:flex; align-items:center; gap:7px; font-size:11px; font-weight:600; color:var(--t2); }
+.rb-title {
+    font-size: 20px;
+    font-weight: 750;
+    letter-spacing: -.01em;
+    color: var(--t1);
+    white-space: nowrap;
+}
+.rb-filters {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+.rb-filter-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.rb-filter-lbl {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--t2);
+    white-space: nowrap;
+}
+.rb-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: var(--p1);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%235a7a9a' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 7px center;
+    border: 1px solid var(--bd2);
+    border-radius: 7px;
+    padding: 5px 24px 5px 9px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--t1);
+    cursor: pointer;
+    outline: none;
+    transition: border-color .18s, box-shadow .18s;
+    font-family: inherit;
+}
+.rb-select:hover  { border-color: rgba(47,140,255,.4); }
+.rb-select:focus  { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(47,140,255,.12); }
+html:not(.dark) .rb-select { background-color: #fff; color: #0e1e34; }
+.rb-select option { background: #172540; color: #cee0f4; }
+html:not(.dark) .rb-select option { background: #fff; color: #0e1e34; }
+
+.rb-fdivider {
+    width: 1px; height: 18px;
+    background: var(--bd2);
+    flex-shrink: 0;
+    margin: 0 2px;
+}
+.rb-apply-btn {
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    padding: 6px 14px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .04em;
+    cursor: pointer;
+    transition: opacity .18s, transform .15s;
+    white-space: nowrap;
+    font-family: inherit;
+}
+.rb-apply-btn:hover  { opacity: .85; transform: translateY(-1px); }
+.rb-apply-btn:active { transform: translateY(0); opacity: 1; }
 
 /* ────────── KPI CARDS ────────── */
 .rb-kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
@@ -331,11 +366,23 @@ html:not(.dark) .rb {
 /* ────────── VERIFY LIST ────────── */
 .rb-vrow { display:flex; align-items:center; gap:11px; padding:12px 16px; border-top:1px solid var(--bd); transition:background .18s; }
 .rb-vrow:hover { background:rgba(47,140,255,.04); }
+
+/* ────────── RESPONSIVE FILTER ────────── */
+@media(max-width:900px) {
+    .rb-subhead { flex-direction: column; align-items: flex-start; }
+    .rb-filters { width: 100%; }
+}
+@media(max-width:600px) {
+    .rb-filters { gap: 8px; }
+    .rb-fdivider { display: none; }
+    .rb-filter-group { flex: 1; min-width: 0; }
+    .rb-select { width: 100%; }
+}
 </style>
 
 <div class="rb">
 
-    {{--  GREETING  --}}
+    {{-- GREETING --}}
     <div class="rb-greet a d1">
         <div class="rb-greet-text">
             <h1>Good {{ $greeting }}, <em>{{ $userName }}</em> 👋</h1>
@@ -347,13 +394,81 @@ html:not(.dark) .rb {
         </div>
     </div>
 
+    {{-- ADMIN DASHBOARD TITLE + INLINE FILTERS --}}
     <div class="rb-subhead a d2">
-        <div>
-            <h2 class="rb-title">Admin Dashboard</h2>
+        <h2 class="rb-title">Admin Dashboard</h2>
+
+        <div class="rb-filters">
+
+            {{-- Period --}}
+            <div class="rb-filter-group">
+                <span class="rb-filter-lbl">Period</span>
+                <select class="rb-select" id="rbf-preset">
+                    @foreach([
+                        'today'        => 'Today',
+                        'yesterday'    => 'Yesterday',
+                        'this_week'    => 'This Week',
+                        'last_week'    => 'Last Week',
+                        'last_30'      => 'Last 30d',
+                        'this_month'   => 'This Month',
+                        'last_month'   => 'Last Month',
+                        'this_quarter' => 'Quarter',
+                        'this_year'    => 'This Year',
+                        'all_time'     => 'All Time',
+                    ] as $val => $label)
+                        <option value="{{ $val }}" @selected(($activePreset ?? 'this_month') === $val)>{{ $label }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="rb-fdivider"></div>
+
+            {{-- Gateway --}}
+            <div class="rb-filter-group">
+                <span class="rb-filter-lbl">Gateway</span>
+                <select class="rb-select" id="rbf-gateway">
+                    <option value="all" @selected(($activeGateway ?? 'all') === 'all')>All Gateways</option>
+                    @foreach(\App\Domains\Payments\Enums\PaymentGateway::cases() as $gw)
+                        <option value="{{ $gw->value }}" @selected(($activeGateway ?? 'all') === $gw->value)>
+                            {{ str($gw->value)->headline() }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="rb-fdivider"></div>
+
+            {{-- Status --}}
+            <div class="rb-filter-group">
+                <span class="rb-filter-lbl">Status</span>
+                <select class="rb-select" id="rbf-status">
+                    <option value="all" @selected(($activeStatus ?? 'all') === 'all')>All Statuses</option>
+                    @foreach(\App\Domains\Payments\Enums\PaymentStatus::cases() as $st)
+                        <option value="{{ $st->value }}" @selected(($activeStatus ?? 'all') === $st->value)>
+                            {{ str($st->value)->headline() }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="rb-fdivider"></div>
+
+            {{-- Courses --}}
+            <div class="rb-filter-group">
+                <span class="rb-filter-lbl">Courses</span>
+                <select class="rb-select" id="rbf-course">
+                    <option value="all"         @selected(($activeCourseStatus ?? 'all') === 'all')>All Courses</option>
+                    <option value="published"   @selected(($activeCourseStatus ?? 'all') === 'published')>Published</option>
+                    <option value="unpublished" @selected(($activeCourseStatus ?? 'all') === 'unpublished')>Unpublished</option>
+                </select>
+            </div>
+
+            <button class="rb-apply-btn" onclick="rbApplyFilters()">Apply</button>
+
         </div>
     </div>
 
-    {{--  TOP KPI CARDS  --}}
+    {{-- TOP KPI CARDS --}}
     <div class="rb-kpis">
 
         <div class="rb-kpi a d3" style="--ic:var(--cyan)">
@@ -412,7 +527,7 @@ html:not(.dark) .rb {
 
     </div>
 
-    {{--  REVENUE CHART + ACTIVITY BARS  --}}
+    {{-- REVENUE CHART + ACTIVITY BARS --}}
     <div class="rb-g2 a d6">
 
         <div class="rb-panel">
@@ -436,7 +551,6 @@ html:not(.dark) .rb {
                     <line x1="30" y1="{{ $gy }}" x2="640" y2="{{ $gy }}" stroke="rgba(148,163,184,.09)" stroke-dasharray="3 7"/>
                     <text x="0" y="{{ $gy+4 }}" fill="#2e4a68" font-size="9">{{ 80-$i*20 }}k</text>
                     @endfor
-                    {{-- order dashed line --}}
                     @foreach($pts->values() as $i => $p)
                     @php
                         $x1o = $ptCount===1 ? 32 : 32+($i/($ptCount-1))*606;
@@ -495,7 +609,7 @@ html:not(.dark) .rb {
 
     </div>
 
-    {{--  TRANSACTIONS + REVENUE SOURCES  --}}
+    {{-- TRANSACTIONS + REVENUE SOURCES --}}
     <div class="rb-g2b a d7">
 
         <div class="rb-panel">
@@ -514,7 +628,7 @@ html:not(.dark) .rb {
                         $st  = $pay->status?->value ?? $pay->status ?? 'pending';
                         $gw  = $pay->payment_gateway?->value ?? $pay->payment_gateway ?? 'payment';
                         $nm  = $pay->order?->user?->name ?? $pay->order?->customer_name ?? 'Customer';
-                        $cls = in_array($st,['paid','completed'],'ok') ? 'ok' : ($st==='pending' ? 'pnd' : 'err');
+                        $cls = in_array($st,['paid','completed']) ? 'ok' : ($st==='pending' ? 'pnd' : 'err');
                     @endphp
                     <tr>
                         <td>
@@ -584,7 +698,7 @@ html:not(.dark) .rb {
 
     </div>
 
-    {{--  SECOND KPI ROW  --}}
+    {{-- SECOND KPI ROW --}}
     <div class="rb-kpis a d8">
 
         <div class="rb-kpi" style="--ic:var(--blue)">
@@ -641,7 +755,7 @@ html:not(.dark) .rb {
 
     </div>
 
-    {{--  RECENT COURSES + PENDING VERIFICATIONS  --}}
+    {{-- RECENT COURSES + PENDING VERIFICATIONS --}}
     <div class="rb-g2b a d9">
 
         <div class="rb-panel">
@@ -704,3 +818,14 @@ html:not(.dark) .rb {
     </div>
 
 </div>
+
+<script>
+function rbApplyFilters() {
+    const p = new URLSearchParams(window.location.search);
+    p.set('preset',        document.getElementById('rbf-preset').value);
+    p.set('gateway',       document.getElementById('rbf-gateway').value);
+    p.set('status',        document.getElementById('rbf-status').value);
+    p.set('course_status', document.getElementById('rbf-course').value);
+    window.location.search = p.toString();
+}
+</script>
