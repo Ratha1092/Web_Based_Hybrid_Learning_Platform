@@ -1,6 +1,8 @@
 import { BookOpen, CheckCircle2,  Play, Users } from "lucide-react";
-import { Link } from "react-router-dom";
+
+import { Link} from "react-router-dom";
 function Hero() {
+  const token = localStorage.getItem("token");
   return (
     <section className="hero">
       <div className="hero-bg" />
@@ -20,9 +22,15 @@ function Hero() {
             interactive way.
           </p>
           <div className="hero-actions">
-           <Link to="/Pageregister" className="btn btn-white">
-  Join for free
-</Link>
+            {token ? (
+              <Link to="/courses" className="btn btn-white">
+                Play Now
+              </Link>
+            ) : (
+              <Link to="/PageRegister" className="btn btn-white">
+                Join for free
+              </Link>
+            )}
             <button className="btn btn-ghost-white">
               <span className="play-icon">
                 <Play size={14} fill="white" />
