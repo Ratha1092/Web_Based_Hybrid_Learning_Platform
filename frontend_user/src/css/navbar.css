@@ -1,0 +1,389 @@
+/* ─────────────────────────────────────────
+   GOOGLE FONT
+───────────────────────────────────────── */
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap");
+
+/* ─────────────────────────────────────────
+   ROOT COLORS
+───────────────────────────────────────── */
+.profile-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: #4f46e5;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.profile-btn:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+}
+:root {
+  --primary: #14b8a6;
+  --primary-dark: #0f766e;
+  --secondary: #ff6b35;
+
+  --text: #1e293b;
+  --text-light: #64748b;
+
+  --white: #ffffff;
+  --border: #e2e8f0;
+
+  --bg-light: #f8fafc;
+
+  --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 20px 40px rgba(20, 184, 166, 0.15);
+
+  --radius: 16px;
+}
+
+/* ─────────────────────────────────────────
+   GLOBAL
+───────────────────────────────────────── */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: var(--bg-light);
+}
+
+/* ─────────────────────────────────────────
+   NAVBAR
+───────────────────────────────────────── */
+
+.navbar {
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(14px);
+
+  box-shadow: var(--shadow-sm);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* ─────────────────────────────────────────
+   TOP NAVBAR
+───────────────────────────────────────── */
+
+.navbar-top {
+  background: linear-gradient(
+    135deg,
+    var(--primary),
+    var(--primary-dark)
+  );
+
+  padding: 10px 0;
+}
+
+.navbar-top-inner {
+  max-width: 1200px;
+  margin: auto;
+
+  padding: 0 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-tagline {
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.navbar-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ─────────────────────────────────────────
+   MAIN NAVBAR
+───────────────────────────────────────── */
+
+.navbar-main {
+  padding: 18px 0;
+}
+
+.navbar-main-inner {
+  max-width: 1200px;
+  margin: auto;
+
+  padding: 0 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ─────────────────────────────────────────
+   LOGO
+───────────────────────────────────────── */
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  cursor: pointer;
+}
+
+.logo-icon {
+  width: 52px;
+  height: 52px;
+
+  border-radius: 16px;
+
+  background: linear-gradient(
+    135deg,
+    var(--primary),
+    var(--primary-dark)
+  );
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+
+  box-shadow: 0 12px 30px rgba(20, 184, 166, 0.3);
+}
+
+.logo-text {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text);
+
+  letter-spacing: 1px;
+}
+
+/* ─────────────────────────────────────────
+   NAV LINKS
+───────────────────────────────────────── */
+
+.nav-links {
+  list-style: none;
+}
+
+.nav-links li {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+}
+
+.nav-links a {
+  position: relative;
+
+  text-decoration: none;
+
+  color: var(--text);
+
+  font-size: 15px;
+  font-weight: 600;
+
+  transition: all 0.3s ease;
+}
+
+.nav-links a::after {
+  content: "";
+
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+
+  width: 0%;
+  height: 3px;
+
+  border-radius: 10px;
+
+  background: var(--primary);
+
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: var(--primary-dark);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+/* ─────────────────────────────────────────
+   RIGHT SIDE
+───────────────────────────────────────── */
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ─────────────────────────────────────────
+   ICON BUTTONS
+───────────────────────────────────────── */
+
+.icon-btn {
+  width: 44px;
+  height: 44px;
+
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+
+  background: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--text-light);
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+.icon-btn:hover {
+  background: var(--primary);
+
+  color: white;
+
+  border-color: var(--primary);
+
+  transform: translateY(-3px);
+
+  box-shadow: var(--shadow-lg);
+}
+
+/* ─────────────────────────────────────────
+   BUTTONS
+───────────────────────────────────────── */
+
+.btn {
+  border: none;
+  outline: none;
+
+  cursor: pointer;
+
+  font-family: inherit;
+
+  transition: all 0.3s ease;
+}
+
+/* LOGIN BUTTON */
+
+.btn-outline-sm {
+  padding: 10px 22px;
+
+  border-radius: 50px;
+
+  background: transparent;
+
+  border: 2px solid rgba(255, 255, 255, 0.4);
+
+  color: white;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.btn-outline-sm:hover {
+  background: white;
+
+  color: var(--primary-dark);
+
+  transform: translateY(-2px);
+}
+
+/* REGISTER BUTTON */
+
+.btn-primary-sm {
+  padding: 10px 24px;
+
+  border-radius: 50px;
+
+  background: linear-gradient(
+    135deg,
+    var(--secondary),
+    #ff8b5e
+  );
+
+  color: white;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  box-shadow: 0 10px 24px rgba(255, 107, 53, 0.3);
+}
+
+.btn-primary-sm:hover {
+  transform: translateY(-3px);
+
+  box-shadow: 0 16px 34px rgba(255, 107, 53, 0.4);
+}
+
+/* ─────────────────────────────────────────
+   MOBILE RESPONSIVE
+───────────────────────────────────────── */
+
+@media (max-width: 900px) {
+
+  .nav-links {
+    display: none;
+  }
+
+  .navbar-main-inner {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .navbar-top {
+    display: none;
+  }
+
+  .navbar-main {
+    padding: 14px 0;
+  }
+
+  .navbar-main-inner {
+    padding: 0 18px;
+  }
+
+  .logo-text {
+    font-size: 22px;
+  }
+
+  .logo-icon {
+    width: 46px;
+    height: 46px;
+  }
+
+  .navbar-right {
+    gap: 8px;
+  }
+
+  .icon-btn {
+    width: 40px;
+    height: 40px;
+  }
+}

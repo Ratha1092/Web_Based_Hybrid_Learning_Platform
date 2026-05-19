@@ -24,6 +24,7 @@ class AuthController extends Controller
         $data = $this->authService->login($request->validated());
 
         return ApiResponse::success($data, 'Login successful');
+        
     }
 
     public function logout()
