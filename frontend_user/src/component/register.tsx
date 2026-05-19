@@ -1,6 +1,7 @@
 import { useState, type ChangeEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+
 import "../css/Register.css";
+import { Link } from "react-router-dom";
 
 
 interface FormState {
@@ -138,7 +139,7 @@ const CLASSROOM_IMAGE =
   "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=520&q=80";
 
 export default function Register() {
-  const navigate = useNavigate();
+
 
   const [form, setForm] = useState<FormState>({
     name: "",
@@ -214,6 +215,12 @@ export default function Register() {
     data.message || "Registration successful!"
   );
 
+  // Save token if returned
+  if (data.data?.token) {
+    localStorage.setItem("token", data.data.token);
+    window.dispatchEvent(new Event("tokenChanged"));
+  }
+
   setForm({
     name: "",
     email: "",
@@ -223,7 +230,7 @@ export default function Register() {
 
   // Auto navigate
   setTimeout(() => {
-    navigate("/PageLogin");
+                  window.location.href = "/";
   }, 1000);
 } else {
         setStatus("error");

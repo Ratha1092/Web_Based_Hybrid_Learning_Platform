@@ -25,6 +25,7 @@ function MainPage() {
 }
 
 function Home() {
+    
   return (
     <>
       {/* IMPORTANT */}
@@ -32,36 +33,16 @@ function Home() {
 
       <Routes>
         <Route path="/" element={<MainPage />} />
+        <Route path="/courses"element={<Courses />}/>
 
-        <Route
-          path="/courses"
-          element={<Courses />}
-        />
+        <Route path="/categories" element={<PageCategories />}/>
 
-        <Route
-          path="/categories"
-          element={<PageCategories />}
-        />
+        <Route path="/how_it_works" element={<HowItWorks />} />
 
-        <Route
-          path="/how_it_works"
-          element={<HowItWorks />}
-        />
+        <Route path="/PageRegister" element={<PageRegister />} />
+        <Route path="/PageLogin" element={<Pagelogin />}/>
 
-        <Route
-          path="/PageRegister"
-          element={<PageRegister />}
-        />
-
-        <Route
-          path="/PageLogin"
-          element={<Pagelogin />}
-        />
-
-        <Route
-          path="/profile"
-          element={<Profile />}
-        />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </>
   );
