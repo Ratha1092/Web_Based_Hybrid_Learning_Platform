@@ -1,6 +1,7 @@
 import { useState, type ChangeEvent } from "react";
-import { data, Link, useNavigate } from "react-router-dom";
+
 import "../css/login.css";
+import { Link } from "react-router-dom";
 
 interface LoginForm {
   email: string;
@@ -122,7 +123,7 @@ export default function Login() {
 
 
 
-  const navigate = useNavigate();
+
 
   const [form, setForm] = useState<LoginForm>({
     email: "",
@@ -205,6 +206,9 @@ export default function Login() {
               window.dispatchEvent(
                 new Event("tokenChanged")
               );
+                setTimeout(() => {
+                  window.location.href = "/";
+                }, 1000);
             }
       } else {
         setStatus("error");
